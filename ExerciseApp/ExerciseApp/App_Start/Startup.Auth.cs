@@ -54,9 +54,9 @@ namespace ExerciseApp
             //   consumerKey: "",
             //   consumerSecret: "");
 
-            //app.UseFacebookAuthentication(
-            //   appId: "",
-            //   appSecret: "");
+            app.UseFacebookAuthentication(
+               appId: "259463334580089",
+               appSecret: "4adf8fc13c888f27d8a794c54dc337e7");
 
             //app.UseGoogleAuthentication(new GoogleOAuth2AuthenticationOptions()
             //{
