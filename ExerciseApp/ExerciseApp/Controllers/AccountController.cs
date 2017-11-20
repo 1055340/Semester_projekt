@@ -9,6 +9,10 @@ using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin.Security;
 using ExerciseApp.Models;
+using Facebook;
+using System.Collections.Generic;
+using Microsoft.Owin.Security.Twitter.Messages;
+using System.Dynamic;
 
 namespace ExerciseApp.Controllers
 {
@@ -328,12 +332,31 @@ namespace ExerciseApp.Controllers
                 return RedirectToAction("Login");
             }
 
+            // added the following lines
+            if (loginInfo.Login.LoginProvider == "Facebook")
+            {
+                var identity = AuthenticationManager.GetExternalIdentity(DefaultAuthenticationTypes.ExternalCookie);
+                var access_token = identity.FindFirstValue("FacebookAccessToken");
+                var fb = new FacebookClient(access_token);
+                dynamic myInfo = fb.Get("/me?fields=id,first_name,last_name,email,gender,birthday"); // specify the email field
+                var fbToken = access_token;
+                var id = myInfo.id;
+                var first_name = myInfo.first_name;
+                var last_name = myInfo.last_name;
+                var email = myInfo.email;
+                var gender = myInfo.gender;
+                var birthday = myInfo.birthday;
+                loginInfo.Email = myInfo.email;
+                
+            }
+
             // Sign in the user with this external login provider if the user already has a login
             var result = await SignInManager.ExternalSignInAsync(loginInfo, isPersistent: false);
             switch (result)
             {
                 case SignInStatus.Success:
-                    return RedirectToLocal(returnUrl);
+                    return View();
+                    //return RedirectToLocal(returnUrl);
                 case SignInStatus.LockedOut:
                     return View("Lockout");
                 case SignInStatus.RequiresVerification:
@@ -343,9 +366,14 @@ namespace ExerciseApp.Controllers
                     // If the user does not have an account, then prompt the user to create an account
                     ViewBag.ReturnUrl = returnUrl;
                     ViewBag.LoginProvider = loginInfo.Login.LoginProvider;
-                    return View("ExternalLoginConfirmation", new ExternalLoginConfirmationViewModel { Email = loginInfo.Email });
+
+                   
+
+
+                    return View("ExternalLoginConfirmation", new ExternalLoginConfirmationViewModel {Email = loginInfo.Email});
             }
         }
+
 
         //
         // POST: /Account/ExternalLoginConfirmation
@@ -375,6 +403,7 @@ namespace ExerciseApp.Controllers
                     if (result.Succeeded)
                     {
                         await SignInManager.SignInAsync(user, isPersistent: false, rememberBrowser: false);
+                        //await StoreFacebookAuthToken(user);
                         return RedirectToLocal(returnUrl);
                     }
                 }
@@ -402,6 +431,9 @@ namespace ExerciseApp.Controllers
         {
             return View();
         }
+
+
+
 
         protected override void Dispose(bool disposing)
         {

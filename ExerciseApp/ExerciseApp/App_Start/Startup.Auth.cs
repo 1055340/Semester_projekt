@@ -6,6 +6,8 @@ using Microsoft.Owin.Security.Cookies;
 using Microsoft.Owin.Security.Google;
 using Owin;
 using ExerciseApp.Models;
+using Microsoft.Owin.Security.Facebook;
+using System.Threading.Tasks;
 
 namespace ExerciseApp
 {
@@ -54,9 +56,24 @@ namespace ExerciseApp
             //   consumerKey: "",
             //   consumerSecret: "");
 
-            app.UseFacebookAuthentication(
-               appId: "259463334580089",
-               appSecret: "4adf8fc13c888f27d8a794c54dc337e7");
+            //app.UseFacebookAuthentication(
+            //   appId: "259463334580089",
+            //   appSecret: "4adf8fc13c888f27d8a794c54dc337e7");
+
+            app.UseFacebookAuthentication(new FacebookAuthenticationOptions
+            {
+                AppId = "259463334580089",
+                AppSecret = "4adf8fc13c888f27d8a794c54dc337e7",
+                Scope = { "email", "publish_actions", "user_about_me", "user_birthday", "user_friends", "user_photos" },
+                Provider = new FacebookAuthenticationProvider
+                {
+                    OnAuthenticated = context =>
+                    {
+                        context.Identity.AddClaim(new System.Security.Claims.Claim("FacebookAccessToken", context.AccessToken));
+                        return Task.FromResult(true);
+                    }
+                }
+            });
 
             //app.UseGoogleAuthentication(new GoogleOAuth2AuthenticationOptions()
             //{
