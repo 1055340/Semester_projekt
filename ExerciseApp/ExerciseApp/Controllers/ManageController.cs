@@ -88,7 +88,7 @@ namespace ExerciseApp.Controllers
             return View(model);
         }
 
-
+        [HttpGet]
         public ActionResult Categories()
         {   
             CategoryEntities context = new CategoryEntities();
@@ -96,11 +96,33 @@ namespace ExerciseApp.Controllers
             exercises = context.EX_ExerciseTable.ToList();
             return View(exercises);
         }
-        public ActionResult Create()
+        [HttpPost]
+        public ActionResult Create(EX_UserExercise newExercise)
         {
+            using (UserInputExerciseEntities context = new UserInputExerciseEntities())
+            {
+                UserExerciseViewModeltest exercise = new UserExerciseViewModeltest();
+                var userid = User.Identity.GetUserId();
+                var test = (newExercise.ExerciseValue1 * newExercise.ExerciseValue2 * newExercise.ExerciseValue3);
+                var testtest = test * newExercise.ExerciseMultiplier;
+                var result = testtest/100;
 
-            return View();
+                EX_UserExercise userExercise = new EX_UserExercise
+                {
+                    UserId = User.Identity.GetUserId(),
+                    ExerciseId = newExercise.ExerciseId,
+                    ExerciseValue = test,
+                    ExerciseScore = result,
+                    ExerciseDate = DateTime.Now,
+                };
+
+                context.EX_UserExercise.Add(userExercise);
+                context.SaveChanges();
+
+            }
+            return RedirectToAction("Index", "Manage");
         }
+
 
 
         //

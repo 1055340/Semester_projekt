@@ -231,6 +231,9 @@
     <Compile Include="EX_ExerciseTable.cs">
       <DependentUpon>CategoryModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="EX_UserExercise.cs">
+      <DependentUpon>UserInputExerciseModel.tt</DependentUpon>
+    </Compile>
     <Compile Include="EX_UserSettings.cs">
       <DependentUpon>UserModel.tt</DependentUpon>
     </Compile>
@@ -242,6 +245,21 @@
     <Compile Include="Models\ManageViewModels.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Startup.cs" />
+    <Compile Include="UserInputExerciseModel.Context.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>UserInputExerciseModel.Context.tt</DependentUpon>
+    </Compile>
+    <Compile Include="UserInputExerciseModel.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>UserInputExerciseModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="UserInputExerciseModel.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>UserInputExerciseModel.edmx</DependentUpon>
+    </Compile>
     <Compile Include="UserModel.Context.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -325,6 +343,16 @@
     <Content Include="Scripts\respond.matchmedia.addListener.js" />
     <Content Include="Scripts\respond.matchmedia.addListener.min.js" />
     <Content Include="Scripts\respond.min.js" />
+    <Content Include="UserInputExerciseModel.Context.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>UserInputExerciseModel.edmx</DependentUpon>
+      <LastGenOutput>UserInputExerciseModel.Context.cs</LastGenOutput>
+    </Content>
+    <Content Include="UserInputExerciseModel.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>UserInputExerciseModel.edmx</DependentUpon>
+      <LastGenOutput>UserInputExerciseModel.cs</LastGenOutput>
+    </Content>
     <Content Include="UserModel.Context.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <DependentUpon>UserModel.edmx</DependentUpon>
@@ -380,6 +408,13 @@
       <DependentUpon>UserModel.edmx</DependentUpon>
     </Content>
     <Content Include="Views\Manage\Categories.cshtml" />
+    <EntityDeploy Include="UserInputExerciseModel.edmx">
+      <Generator>EntityModelCodeGenerator</Generator>
+      <LastGenOutput>UserInputExerciseModel.Designer.cs</LastGenOutput>
+    </EntityDeploy>
+    <Content Include="UserInputExerciseModel.edmx.diagram">
+      <DependentUpon>UserInputExerciseModel.edmx</DependentUpon>
+    </Content>
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

@@ -30,6 +30,18 @@ namespace ExerciseApp.Models
         public double ExerciseMultiplier { get; set; }
         public virtual IEnumerable<EX_ExerciseTable> Exercises { get; set; }
     }
+    public class UserExerciseViewModeltest : DbContext
+    {
+        public string UserId { get; set; }
+        public int ExerciseId { get; set; }
+        public int ExerciseValue { get; set; }
+        public int ExerciseValue1 { get; set; }
+        public int ExerciseValue2 { get; set; }
+        public int ExerciseValue3 { get; set; }
+        public int ExerciseMultiplier { get; set; }
+        public int ExerciseScore { get; set; }
+        public System.DateTime ExerciseDate { get; set; }
+    }
     public class ManageLoginsViewModel
     {
         public IList<UserLoginInfo> CurrentLogins { get; set; }
