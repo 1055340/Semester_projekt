@@ -7,6 +7,8 @@ using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin.Security;
 using ExerciseApp.Models;
+using System.Data.Entity;
+using System.Collections.Generic;
 
 namespace ExerciseApp.Controllers
 {
@@ -64,6 +66,7 @@ namespace ExerciseApp.Controllers
                 : "";
 
             var userId = User.Identity.GetUserId();
+            
             var model = new IndexViewModel
             {
                 HasPassword = HasPassword(),
@@ -72,8 +75,33 @@ namespace ExerciseApp.Controllers
                 Logins = await UserManager.GetLoginsAsync(userId),
                 BrowserRemembered = await AuthenticationManager.TwoFactorBrowserRememberedAsync(userId)
             };
+            using (UserSettingsEntities context = new UserSettingsEntities())
+            {
+                EX_UserSettings user = context.EX_UserSettings.FirstOrDefault(r => r.UserId == userId);
+                model.UserId = user.FacebookId;
+                model.UserFirstName = user.UserFirstName;
+                model.UserLastName = user.UserLastName;
+                model.UserGender = user.UserGender;
+                var dt = user.UserBirthday;
+                model.UserBirthday = String.Format("{0:dd/MM/yyyy}", dt);
+            };
             return View(model);
         }
+
+
+        public ActionResult Categories()
+        {   
+            CategoryEntities context = new CategoryEntities();
+            IEnumerable<EX_ExerciseTable> exercises = new List<EX_ExerciseTable>();
+            exercises = context.EX_ExerciseTable.ToList();
+            return View(exercises);
+        }
+        public ActionResult Create()
+        {
+
+            return View();
+        }
+
 
         //
         // POST: /Manage/RemoveLogin

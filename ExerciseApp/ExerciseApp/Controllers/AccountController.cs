@@ -13,6 +13,8 @@ using Facebook;
 using System.Collections.Generic;
 using Microsoft.Owin.Security.Twitter.Messages;
 using System.Dynamic;
+using System.Web.Security;
+using Newtonsoft.Json.Linq;
 
 namespace ExerciseApp.Controllers
 {
@@ -332,22 +334,10 @@ namespace ExerciseApp.Controllers
                 return RedirectToAction("Login");
             }
 
-            // added the following lines
             if (loginInfo.Login.LoginProvider == "Facebook")
             {
-                var identity = AuthenticationManager.GetExternalIdentity(DefaultAuthenticationTypes.ExternalCookie);
-                var access_token = identity.FindFirstValue("FacebookAccessToken");
-                var fb = new FacebookClient(access_token);
-                dynamic myInfo = fb.Get("/me?fields=id,first_name,last_name,email,gender,birthday"); // specify the email field
-                var fbToken = access_token;
-                var id = myInfo.id;
-                var first_name = myInfo.first_name;
-                var last_name = myInfo.last_name;
-                var email = myInfo.email;
-                var gender = myInfo.gender;
-                var birthday = myInfo.birthday;
-                loginInfo.Email = myInfo.email;
                 
+
             }
 
             // Sign in the user with this external login provider if the user already has a login
@@ -355,8 +345,8 @@ namespace ExerciseApp.Controllers
             switch (result)
             {
                 case SignInStatus.Success:
-                    return View();
-                    //return RedirectToLocal(returnUrl);
+                    
+                    return RedirectToLocal(returnUrl);
                 case SignInStatus.LockedOut:
                     return View("Lockout");
                 case SignInStatus.RequiresVerification:
@@ -367,7 +357,7 @@ namespace ExerciseApp.Controllers
                     ViewBag.ReturnUrl = returnUrl;
                     ViewBag.LoginProvider = loginInfo.Login.LoginProvider;
 
-                   
+                    
 
 
                     return View("ExternalLoginConfirmation", new ExternalLoginConfirmationViewModel {Email = loginInfo.Email});
@@ -402,14 +392,54 @@ namespace ExerciseApp.Controllers
                     result = await UserManager.AddLoginAsync(user.Id, info.Login);
                     if (result.Succeeded)
                     {
+                        //Facebook SDK
+                        var identity = AuthenticationManager.GetExternalIdentity(DefaultAuthenticationTypes.ExternalCookie);
+                        var access_token = identity.FindFirstValue("FacebookAccessToken");
+                        var fb = new FacebookClient(access_token);
+                        dynamic myInfo = fb.Get("/me?fields=id,first_name,last_name,email,gender,birthday");
+
+                        //Saving FB data to vars to store in DB
+                        var fbToken = access_token;
+                        var userid = user.Id;
+                        var faceid = myInfo.id;
+                        var first_name = myInfo.first_name;
+                        var last_name = myInfo.last_name;
+                        var email = myInfo.email;
+                        var gender = myInfo.gender;
+                        var birthday = myInfo.birthday;
+
+                        String date = DateTime
+                        .ParseExact(birthday, "MM/dd/yyyy", CultureInfo.InvariantCulture)
+                        .ToString("yyyy-MM-dd", CultureInfo.InvariantCulture);
+
+                        DateTime bday = DateTime.Parse(date);
+
+                        using (UserSettingsEntities context = new UserSettingsEntities())
+                        {
+                            EX_UserSettings newUser = new EX_UserSettings
+                            {
+                                UserId = userid,
+                                UserEmail = email,
+                                UserFirstName = first_name,
+                                UserLastName = last_name,
+                                UserGender = gender,
+                                FacebookToken = fbToken,
+                                UserBirthday = bday,
+                                FacebookId = faceid,
+                            };
+                            context.EX_UserSettings.Add(newUser);
+                            context.SaveChanges();
+                        }
+
+
+
                         await SignInManager.SignInAsync(user, isPersistent: false, rememberBrowser: false);
-                        //await StoreFacebookAuthToken(user);
                         return RedirectToLocal(returnUrl);
                     }
                 }
                 AddErrors(result);
             }
-
+            
             ViewBag.ReturnUrl = returnUrl;
             return View(model);
         }

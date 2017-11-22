@@ -2,18 +2,34 @@
 using System.ComponentModel.DataAnnotations;
 using Microsoft.AspNet.Identity;
 using Microsoft.Owin.Security;
+using System.Data.Entity;
 
 namespace ExerciseApp.Models
 {
     public class IndexViewModel
     {
+        public string UserId { get; set; }
+        public string UserEmail { get; set; }
+        public string UserFirstName { get; set; }
+        public string UserLastName { get; set; }
+        public string UserGender { get; set; }
+        public string FacebookToken { get; set; }
+        public string UserBirthday { get; set; }
+
         public bool HasPassword { get; set; }
         public IList<UserLoginInfo> Logins { get; set; }
         public string PhoneNumber { get; set; }
         public bool TwoFactor { get; set; }
         public bool BrowserRemembered { get; set; }
     }
-
+    public class CategoriesViewModel : DbContext
+    {
+        public int ExerciseId { get; set; }
+        public string ExerciseName { get; set; }
+        public bool ExerciseType { get; set; }
+        public double ExerciseMultiplier { get; set; }
+        public virtual IEnumerable<EX_ExerciseTable> Exercises { get; set; }
+    }
     public class ManageLoginsViewModel
     {
         public IList<UserLoginInfo> CurrentLogins { get; set; }

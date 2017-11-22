@@ -1,0 +1,41 @@
+﻿@model IEnumerable<ExerciseApp.EX_ExerciseTable>
+
+@{
+
+}
+@Styles.Render("~/Content/css")
+
+<h2>Categories</h2>
+<div class="row">
+    <div class="col-xs-12">
+        
+        @foreach (var item in Model)
+        {
+            <div class="col-xs-6">
+                <div class="categories col-xs-12" data-toggle="modal" data-target="#categoryModal" data-return="@item.ExerciseType">
+                    <img style="filter: invert(100%); height: 75px; width: 75px;" class="category-images" src="~/images/@(item.ExerciseId).png" />
+                    <p>@Html.DisplayFor(modelItem => item.ExerciseName)</p>
+                </div>
+            </div>
+            
+        }
+
+        <div id="categoryModal" class="modal fade" role="dialog">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                        <h4 class="modal-title"></h4>
+                    </div>
+                    <div class="modal-body">
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+

@@ -22,3 +22,34 @@ select,
 textarea {
     max-width: 280px;
 }
+
+.categories {
+    border-radius:200px;
+    border: 1px solid #e9e9e9;
+    text-align: center;
+    margin: 5px 0;
+    padding: 15px;
+    transition: border-color .3s;
+}
+.categories:hover {
+    transition: border-color .3s;
+    border-color: #252525;
+}
+.categories > p {
+    margin: 0;
+}
+
+.modal-append {
+    text-align: center;
+}
+.modal-append > div {
+    margin:5px 0;
+}
+.modal-append > .modal-img {
+    margin-bottom: 35px;
+}
+.modal-append > div > img {
+    filter: invert(100%);
+    height: 200px;
+    width: 200px;
+}
