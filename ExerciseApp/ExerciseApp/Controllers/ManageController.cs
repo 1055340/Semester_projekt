@@ -103,16 +103,17 @@ namespace ExerciseApp.Controllers
             {
                 UserExerciseViewModeltest exercise = new UserExerciseViewModeltest();
                 var userid = User.Identity.GetUserId();
-                var test = (newExercise.ExerciseValue1 * newExercise.ExerciseValue2 * newExercise.ExerciseValue3);
-                var testtest = test * newExercise.ExerciseMultiplier;
-                var result = testtest/100;
+                var exerciseValue = (newExercise.ExerciseValue1 * newExercise.ExerciseValue2 * newExercise.ExerciseValue3);
+                var ExerciseScorestep1 = exerciseValue * newExercise.ExerciseMultiplier;
+                var ExerciseScoreResult = ExerciseScorestep1 / 100;
+
 
                 EX_UserExercise userExercise = new EX_UserExercise
                 {
                     UserId = User.Identity.GetUserId(),
                     ExerciseId = newExercise.ExerciseId,
-                    ExerciseValue = test,
-                    ExerciseScore = result,
+                    ExerciseValue = exerciseValue,
+                    ExerciseScore = ExerciseScoreResult,
                     ExerciseDate = DateTime.Now,
                 };
 
