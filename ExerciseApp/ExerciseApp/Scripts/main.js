@@ -24,5 +24,11 @@
             $('#categoryModal .modal-body').append(strengthContent);
         }
     });
-
+    var currentxp = $('.level-container').data('currentxp');
+    var nextxp = $('.level-container').data('nextlevel');
+    var xpProgress = (currentxp / nextxp) * 100;
+    $('.level-container > .xp-bar > div').animate({
+        width: (xpProgress + '%')
+    }, 1000);
+//$('.level-container > .xp-bar > div').width(xpProgress + '%');
 }); 

@@ -52,6 +52,9 @@ namespace ExerciseApp.Controllers
             }
         }
 
+
+        
+
         //
         // GET: /Manage/Index
         public async Task<ActionResult> Index(ManageMessageId? message)
@@ -66,8 +69,11 @@ namespace ExerciseApp.Controllers
                 : "";
 
             var userId = User.Identity.GetUserId();
-            
-            var model = new IndexViewModel
+
+
+        
+
+        var model = new IndexViewModel
             {
                 HasPassword = HasPassword(),
                 PhoneNumber = await UserManager.GetPhoneNumberAsync(userId),
@@ -75,6 +81,30 @@ namespace ExerciseApp.Controllers
                 Logins = await UserManager.GetLoginsAsync(userId),
                 BrowserRemembered = await AuthenticationManager.TwoFactorBrowserRememberedAsync(userId)
             };
+
+            using (UserLevelXpEntities levelcontext = new UserLevelXpEntities())
+            {
+                
+                //var userlevel = levelcontext.EX_UserLevel.SingleOrDefault(u => u.UserId == userId).UserXp;
+                var xpToSum = levelcontext.EX_UserLevel.Where(u => u.UserId == userId);
+                int xpSum = xpToSum.AsQueryable().Sum(pkg => pkg.UserXp);
+                var next = levelcontext.EX_LevelTable.FirstOrDefault(u => u.TotalLevelXp > xpSum);
+
+                var totalXpForThisLevel = levelcontext.EX_LevelTable.FirstOrDefault(u => u.LevelId == next.LevelId - 1).TotalLevelXp;
+                var totalXpForThisLevelEquals = xpSum - totalXpForThisLevel;
+                var totalXpForNextLevel = next.TotalLevelXp - totalXpForThisLevel;
+
+                model.UserTotalXp = xpSum;
+                model.xpNeededForNext = next.TotalLevelXp;
+                model.currentUserLevel = next.LevelId-1;
+                model.nextUserLevel = next.LevelId;
+                model.totalXpForThisLevelEquals = totalXpForThisLevelEquals;
+                model.totalXpForNextLevel = totalXpForNextLevel;
+                //IEnumerable<EX_UserLevel> totalUserXp = new List<EX_UserLevel>();
+                //totalUserXp = totalxp.ToList();
+                //model.UserTotalXp = totalUserXp;
+            }
+
             using (UserSettingsEntities context = new UserSettingsEntities())
             {
                 EX_UserSettings user = context.EX_UserSettings.FirstOrDefault(r => r.UserId == userId);
@@ -88,6 +118,11 @@ namespace ExerciseApp.Controllers
             return View(model);
         }
 
+        //private static void NewMethod(IndexViewModel model, IEnumerable<EX_UserLevel> totalUserXp)
+        //{
+        //    model.UserTotalXp = totalUserXp;
+        //}
+
         [HttpGet]
         public ActionResult Categories()
         {   
@@ -99,15 +134,14 @@ namespace ExerciseApp.Controllers
         [HttpPost]
         public ActionResult Create(EX_UserExercise newExercise)
         {
-            using (UserInputExerciseEntities context = new UserInputExerciseEntities())
-            {
+            
                 UserExerciseViewModeltest exercise = new UserExerciseViewModeltest();
                 var userid = User.Identity.GetUserId();
                 var exerciseValue = (newExercise.ExerciseValue1 * newExercise.ExerciseValue2 * newExercise.ExerciseValue3);
                 var ExerciseScorestep1 = exerciseValue * newExercise.ExerciseMultiplier;
                 var ExerciseScoreResult = ExerciseScorestep1 / 100;
-
-
+            using (UserInputExerciseEntities context = new UserInputExerciseEntities())
+            {
                 EX_UserExercise userExercise = new EX_UserExercise
                 {
                     UserId = User.Identity.GetUserId(),
@@ -116,11 +150,25 @@ namespace ExerciseApp.Controllers
                     ExerciseScore = ExerciseScoreResult,
                     ExerciseDate = DateTime.Now,
                 };
-
                 context.EX_UserExercise.Add(userExercise);
                 context.SaveChanges();
-
             }
+            using (UserLevelXpEntities levelContext = new UserLevelXpEntities())
+            {
+                EX_UserLevel userXp = new EX_UserLevel
+                {
+                    UserId = User.Identity.GetUserId(),
+                    UserXp = ExerciseScoreResult,
+                };
+                levelContext.EX_UserLevel.Add(userXp);
+                levelContext.SaveChanges();
+            }
+
+                    
+
+                
+
+            
             return RedirectToAction("Index", "Manage");
         }
 

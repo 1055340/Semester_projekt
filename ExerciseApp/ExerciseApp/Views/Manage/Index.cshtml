@@ -12,6 +12,17 @@
             <h3>Welcome to you, @Model.UserFirstName @Model.UserLastName ! ^_^ </h3>
             <h4>Your birthday is @Model.UserBirthday</h4>
             <h5>Your gender is @Model.UserGender</h5>
+            <div style="display:flex" class="level-container col-md-12" data-currentxp="@Model.totalXpForThisLevelEquals" data-nextlevel="@Model.totalXpForNextLevel">
+                <div class="current-level col-xs-1">
+                    <span>@Model.currentUserLevel</span>
+                </div>
+                <div class="xp-bar col-xs-10">
+                    <div style="text-align:center"><span>@Model.totalXpForThisLevelEquals xp / @Model.totalXpForNextLevel xp</span></div>
+                </div>
+                <div class="next-level col-xs-1 pull-right">
+                    <span>@Model.nextUserLevel</span>
+                </div>
+            </div>
         </div>
         
         

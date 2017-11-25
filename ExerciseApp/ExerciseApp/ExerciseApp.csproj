@@ -231,8 +231,14 @@
     <Compile Include="EX_ExerciseTable.cs">
       <DependentUpon>CategoryModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="EX_LevelTable.cs">
+      <DependentUpon>UserLevelXpModel.tt</DependentUpon>
+    </Compile>
     <Compile Include="EX_UserExercise.cs">
       <DependentUpon>UserInputExerciseModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EX_UserLevel.cs">
+      <DependentUpon>UserLevelXpModel.tt</DependentUpon>
     </Compile>
     <Compile Include="EX_UserSettings.cs">
       <DependentUpon>UserModel.tt</DependentUpon>
@@ -259,6 +265,21 @@
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>UserInputExerciseModel.edmx</DependentUpon>
+    </Compile>
+    <Compile Include="UserLevelXpModel.Context.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>UserLevelXpModel.Context.tt</DependentUpon>
+    </Compile>
+    <Compile Include="UserLevelXpModel.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>UserLevelXpModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="UserLevelXpModel.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>UserLevelXpModel.edmx</DependentUpon>
     </Compile>
     <Compile Include="UserModel.Context.cs">
       <AutoGen>True</AutoGen>
@@ -291,6 +312,7 @@
     <Content Include="Content\bootstrap-theme.min.css" />
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
+    <Content Include="Content\jasny-bootstrap.min.css" />
     <Content Include="favicon.ico" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
@@ -327,6 +349,7 @@
     </Content>
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
     <None Include="Scripts\jquery-3.2.1.intellisense.js" />
+    <Content Include="Scripts\jasny-bootstrap.min.js" />
     <Content Include="Scripts\jquery-3.2.1.js" />
     <Content Include="Scripts\jquery-3.2.1.min.js" />
     <Content Include="Scripts\jquery-3.2.1.slim.js" />
@@ -352,6 +375,16 @@
       <Generator>TextTemplatingFileGenerator</Generator>
       <DependentUpon>UserInputExerciseModel.edmx</DependentUpon>
       <LastGenOutput>UserInputExerciseModel.cs</LastGenOutput>
+    </Content>
+    <Content Include="UserLevelXpModel.Context.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>UserLevelXpModel.edmx</DependentUpon>
+      <LastGenOutput>UserLevelXpModel.Context.cs</LastGenOutput>
+    </Content>
+    <Content Include="UserLevelXpModel.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>UserLevelXpModel.edmx</DependentUpon>
+      <LastGenOutput>UserLevelXpModel.cs</LastGenOutput>
     </Content>
     <Content Include="UserModel.Context.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
@@ -414,6 +447,13 @@
     </EntityDeploy>
     <Content Include="UserInputExerciseModel.edmx.diagram">
       <DependentUpon>UserInputExerciseModel.edmx</DependentUpon>
+    </Content>
+    <EntityDeploy Include="UserLevelXpModel.edmx">
+      <Generator>EntityModelCodeGenerator</Generator>
+      <LastGenOutput>UserLevelXpModel.Designer.cs</LastGenOutput>
+    </EntityDeploy>
+    <Content Include="UserLevelXpModel.edmx.diagram">
+      <DependentUpon>UserLevelXpModel.edmx</DependentUpon>
     </Content>
   </ItemGroup>
   <ItemGroup>

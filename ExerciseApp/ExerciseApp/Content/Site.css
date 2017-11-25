@@ -53,3 +53,51 @@ textarea {
     height: 200px;
     width: 200px;
 }
+
+
+/*
+    XP SHOWER
+*/
+.level-container {
+    padding: 15px;
+    border: 1px solid #e9e9e9;
+}
+.level-container .xp-bar {
+    overflow: hidden;
+}
+.level-container .xp-bar > div {
+    background-color: #b2b2b2;
+    border: 1px solid #efefef;
+    height: 100%;
+    width: 0%;
+    padding: 5px;
+    overflow: hidden;
+    white-space: nowrap;
+}
+.level-container .xp-bar > div > span {
+    color:#000;
+    overflow: hidden;
+    white-space: nowrap;
+}
+.level-container > div {
+    padding: 0;
+}
+.level-container .current-level, .level-container .next-level {
+    font-size: 1.6em;
+    text-align: center;
+    border: 1px solid #e9e9e9;
+}
+.level-container .current-level {
+    border-right: 3px solid #0094ff;
+}
+.level-container .next-level {
+    border-left: 3px solid #0094ff;
+}
+
+/*Navbar Customization*/
+
+.navbar-toggle {
+    position: absolute;
+    left: 15px;
+    top: 0;
+}
