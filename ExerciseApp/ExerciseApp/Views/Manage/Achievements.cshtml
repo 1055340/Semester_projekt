@@ -1,0 +1,45 @@
+﻿@model IEnumerable<ExerciseApp.EX_AchievementTable>
+
+@{
+    ViewBag.Title = "Achievements";
+}
+
+<h2>Achievements</h2>
+
+<p>
+    @Html.ActionLink("Create New", "Create")
+</p>
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.AchievementName)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.AchievementDescription)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.AchievementScore)
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.AchievementName)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.AchievementDescription)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.AchievementScore)
+        </td>
+        <td>
+            @Html.ActionLink("Edit", "Edit", new { id=item.AchievementId }) |
+            @Html.ActionLink("Details", "Details", new { id=item.AchievementId }) |
+            @Html.ActionLink("Delete", "Delete", new { id=item.AchievementId })
+        </td>
+    </tr>
+}
+
+</table>

@@ -205,6 +205,21 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AchievementsModel.Context.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>AchievementsModel.Context.tt</DependentUpon>
+    </Compile>
+    <Compile Include="AchievementsModel.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>AchievementsModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="AchievementsModel.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>AchievementsModel.edmx</DependentUpon>
+    </Compile>
     <Compile Include="App_Start\BundleConfig.cs" />
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\IdentityConfig.cs" />
@@ -228,6 +243,9 @@
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
+    <Compile Include="EX_AchievementTable.cs">
+      <DependentUpon>AchievementsModel.tt</DependentUpon>
+    </Compile>
     <Compile Include="EX_ExerciseTable.cs">
       <DependentUpon>CategoryModel.tt</DependentUpon>
     </Compile>
@@ -298,6 +316,16 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="AchievementsModel.Context.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>AchievementsModel.edmx</DependentUpon>
+      <LastGenOutput>AchievementsModel.Context.cs</LastGenOutput>
+    </Content>
+    <Content Include="AchievementsModel.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>AchievementsModel.edmx</DependentUpon>
+      <LastGenOutput>AchievementsModel.cs</LastGenOutput>
+    </Content>
     <Content Include="CategoryModel.Context.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <DependentUpon>CategoryModel.edmx</DependentUpon>
@@ -347,6 +375,14 @@
     <Content Include="CategoryModel.edmx.diagram">
       <DependentUpon>CategoryModel.edmx</DependentUpon>
     </Content>
+    <EntityDeploy Include="AchievementsModel.edmx">
+      <Generator>EntityModelCodeGenerator</Generator>
+      <LastGenOutput>AchievementsModel.Designer.cs</LastGenOutput>
+    </EntityDeploy>
+    <Content Include="AchievementsModel.edmx.diagram">
+      <DependentUpon>AchievementsModel.edmx</DependentUpon>
+    </Content>
+    <None Include="Properties\PublishProfiles\CustomProfile.pubxml" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
     <None Include="Scripts\jquery-3.2.1.intellisense.js" />
     <Content Include="Scripts\jasny-bootstrap.min.js" />
@@ -396,7 +432,9 @@
       <DependentUpon>UserModel.edmx</DependentUpon>
       <LastGenOutput>UserModel.cs</LastGenOutput>
     </Content>
-    <Content Include="Web.config" />
+    <Content Include="Web.config">
+      <SubType>Designer</SubType>
+    </Content>
     <Content Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </Content>
@@ -455,6 +493,7 @@
     <Content Include="UserLevelXpModel.edmx.diagram">
       <DependentUpon>UserLevelXpModel.edmx</DependentUpon>
     </Content>
+    <Content Include="Views\Manage\Achievements.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

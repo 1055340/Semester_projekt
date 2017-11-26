@@ -101,3 +101,6 @@ textarea {
     left: 15px;
     top: 0;
 }
+.navmenu-nav {
+    display: block;
+}

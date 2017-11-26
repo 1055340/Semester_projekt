@@ -28,6 +28,13 @@ namespace ExerciseApp.Models
         public bool TwoFactor { get; set; }
         public bool BrowserRemembered { get; set; }
     }
+    public class Achievements : DbContext
+    {
+        public int AchievementId { get; set; }
+        public string AchievementName { get; set; }
+        public string AchievementDescription { get; set; }
+        public int AchievementScore { get; set; }
+    }
     public class CategoriesViewModel : DbContext
     {
         public int ExerciseId { get; set; }

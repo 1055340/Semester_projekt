@@ -53,7 +53,14 @@ namespace ExerciseApp.Controllers
         }
 
 
-        
+        [HttpGet]
+        public ActionResult Achievements()
+        {
+            AchievementsEntities context = new AchievementsEntities();
+            IEnumerable<EX_AchievementTable> achievements = new List<EX_AchievementTable>();
+            achievements = context.EX_AchievementTable.ToList();
+            return View(achievements);
+        }
 
         //
         // GET: /Manage/Index
