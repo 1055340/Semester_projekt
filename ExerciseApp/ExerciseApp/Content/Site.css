@@ -104,3 +104,11 @@ textarea {
 .navmenu-nav {
     display: block;
 }
+
+/*Achievements*/
+.achievement-container > div {
+    border: 1px solid #e9e9e9;
+}
+.achievement-container > div > p {
+    margin: 10px 0;
+}

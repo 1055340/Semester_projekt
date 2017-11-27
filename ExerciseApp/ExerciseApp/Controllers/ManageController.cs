@@ -91,17 +91,25 @@ namespace ExerciseApp.Controllers
 
             using (UserLevelXpEntities levelcontext = new UserLevelXpEntities())
             {
-                
+
                 //var userlevel = levelcontext.EX_UserLevel.SingleOrDefault(u => u.UserId == userId).UserXp;
-                var xpToSum = levelcontext.EX_UserLevel.Where(u => u.UserId == userId);
-                int xpSum = xpToSum.AsQueryable().Sum(pkg => pkg.UserXp);
-                var next = levelcontext.EX_LevelTable.FirstOrDefault(u => u.TotalLevelXp > xpSum);
+                //var xpToSum = levelcontext.EX_UserLevel.Where(u => u.UserId == userId);
+                //int xpSum = xpToSum.AsQueryable().Sum(pkg => pkg.UserXp);
+                if (!levelcontext.EX_UserLevel.Any())
+                {
+                    var xzzzzzzz = "wowowowo";
+                } else
+                {
+                    var yzzzzzz = "wowowowowo";
+                }
+                //int xpSumInt = xpSum.Value;
+                var next = levelcontext.EX_LevelTable.FirstOrDefault(u => u.TotalLevelXp > xpSumInt);
 
                 var totalXpForThisLevel = levelcontext.EX_LevelTable.FirstOrDefault(u => u.LevelId == next.LevelId - 1).TotalLevelXp;
-                var totalXpForThisLevelEquals = xpSum - totalXpForThisLevel;
+                var totalXpForThisLevelEquals = xpSumInt - totalXpForThisLevel;
                 var totalXpForNextLevel = next.TotalLevelXp - totalXpForThisLevel;
 
-                model.UserTotalXp = xpSum;
+                model.UserTotalXp = xpSumInt;
                 model.xpNeededForNext = next.TotalLevelXp;
                 model.currentUserLevel = next.LevelId-1;
                 model.nextUserLevel = next.LevelId;
