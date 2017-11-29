@@ -9,6 +9,8 @@ using Microsoft.Owin.Security;
 using ExerciseApp.Models;
 using System.Data.Entity;
 using System.Collections.Generic;
+using Newtonsoft.Json;
+
 
 namespace ExerciseApp.Controllers
 {
@@ -62,6 +64,134 @@ namespace ExerciseApp.Controllers
             return View(achievements);
         }
 
+
+        [HttpPost]
+        //Json kode som tjekker om brugeren har en uvist popup efter at have tilføjet en træning
+        public JsonResult GetXpPopup()
+        {
+            //Først henter vi det data vi skal bruge fra EX_userExercise
+            using (UserInputExerciseEntities userexercisecontext = new UserInputExerciseEntities())
+            {
+                var userId = User.Identity.GetUserId();
+                var popupexercisequeryparametres = from userexercise in userexercisecontext.EX_UserExercise
+                                                   where userexercise.UserId == userId
+                                                   && userexercise.UserPopupSeen == false
+                                                   select new { userexercise.UserId, userexercise.ExerciseId, userexercise.ExerciseScore, userexercise.ExerciseDate };
+                //Vi opdaterer den bool i databasen som siger om brugeren har modtaget popuppen, så den ikke forefindes mere end en gang
+                
+                //Så henter vi det data vi skal bruge fra EX_UserLevel og EX_LevelTable 
+                using (UserLevelXpEntities levelcontext = new UserLevelXpEntities())
+                {
+                    var totalUserXp = 0;
+                    var popupuserqueryparametres = from userlevel in levelcontext.EX_UserLevel
+                                                   where userlevel.UserId == userId
+                                                   select userlevel.UserXp;
+                    foreach(var result in popupuserqueryparametres)
+                    {
+                        totalUserXp += result;
+                    }
+                    
+                    //Så udregner vi nuværende xp, xp for næste level, nuværende level og næste level som skal vises i popup'en
+                    var xpSum = totalUserXp;
+                    var next = levelcontext.EX_LevelTable.FirstOrDefault(u => u.TotalLevelXp > xpSum);
+                    int totalXpForThisLevel;
+                    
+                    //if statementet er til for at undgå den null-error som kommer hvis databasen returnerer 0, når vi prøver at hente brugerens level
+                    if (!levelcontext.EX_LevelTable.Any(u => u.LevelId == next.LevelId - 1))
+                    {
+                        totalXpForThisLevel = 0;
+                    }
+                    else
+                    {
+                        totalXpForThisLevel = levelcontext.EX_LevelTable.FirstOrDefault(u => u.LevelId == next.LevelId - 1).TotalLevelXp;
+                    }
+                    var totalXpForThisLevelEquals = xpSum - totalXpForThisLevel;
+                    var totalXpForNextLevel = next.TotalLevelXp - totalXpForThisLevel;
+
+                    //Nu har vi informationer vi skal bruge for at vise det nye level og xp brugeren har fået, men vi skal også bruge de informationer som brugeren
+                    //have før indtastningen, for at kunne animere level-ups.
+                    int xptowithdraw;
+                    if (!userexercisecontext.EX_UserExercise.Any(u => u.UserId == userId))
+                    {
+                        xptowithdraw = 0;
+                    } else
+                    {
+                        xptowithdraw = userexercisecontext.EX_UserExercise.OrderByDescending(o => o.ExerciseDate).FirstOrDefault(u => u.UserId == userId).ExerciseScore;
+
+                    }
+                    int currentxp = xpSum - xptowithdraw;
+                    int OldCurrentLevel;
+                    if (!levelcontext.EX_LevelTable.Any(u => u.TotalLevelXp < currentxp))
+                    {
+                        OldCurrentLevel = 0;
+                    }
+                    else
+                    {
+                        OldCurrentLevel = levelcontext.EX_LevelTable.OrderByDescending(o => o.TotalLevelXp).FirstOrDefault(u => u.TotalLevelXp < currentxp).LevelId;
+                    }
+                    var XpForCurrentLevelEquals = currentxp - OldCurrentLevel;
+                    var OldNextLevel = levelcontext.EX_LevelTable.FirstOrDefault(u => u.TotalLevelXp > currentxp);
+                    var XpForNextLevelEquals = OldNextLevel.TotalLevelXp - OldCurrentLevel;
+
+
+                    //Så udregner vi nuværende xp, xp for næste level, nuværende level og næste level som skal vises i popup'en
+                    //var OldxpSum = OldtotalUserXp-;
+
+
+
+
+
+
+
+                    string json = "";
+                    //Så bygger vi modellen som skal sendes til javascriptet via Json
+                    List<UserInputPopup> popups = new List<UserInputPopup>();
+                    foreach (var result in popupexercisequeryparametres)
+                    {
+                        UserInputPopup popup = new UserInputPopup();
+                        //Brugerens ID
+                        popup.UserId = userId;
+
+                        //ID for denne træningsøvelse
+                        popup.ExerciseId = result.ExerciseId;
+
+                        //Den mængde xp som brugeren får for denne indtastning
+                        popup.ExerciseScore = result.ExerciseScore;
+
+                        //Den relative mængde xp som brugeren har lige nu i forhold til næste level
+                        popup.totalXpForThisLevelEquals = totalXpForThisLevelEquals;
+
+                        //Den relative mængde xp som brugeren har brug for, for at nå næste level
+                        popup.totalXpForNextLevel = totalXpForNextLevel;
+
+                        //Brugerens nuværende level
+                        popup.currentUserLevel = next.LevelId - 1;
+
+                        //Brugeres næste level
+                        popup.nextUserLevel = next.LevelId;
+
+                        //Brugerens relative mængde xp, før denne indtastning (for at vise animationen i popup'en
+                        popup.currentUserXp = currentxp;
+
+                        popup.OldCurrentLevel = OldCurrentLevel;
+
+                        popup.OldNextLevel = OldNextLevel.LevelId;
+
+                        popup.XpForCurrentLevelEquals = XpForCurrentLevelEquals;
+                        popup.XpForNextLevelEquals = XpForNextLevelEquals;
+                        popups.Add(popup);
+                    }
+
+                    foreach (var unchangedpopups in userexercisecontext.EX_UserExercise.Where(x => x.UserId == userId))
+                    {
+                        unchangedpopups.UserPopupSeen = true;
+                    }
+                    userexercisecontext.SaveChanges();
+                    json = JsonConvert.SerializeObject(popups);
+                    return Json(json);
+                }
+            }
+        }
         //
         // GET: /Manage/Index
         public async Task<ActionResult> Index(ManageMessageId? message)
@@ -76,10 +206,6 @@ namespace ExerciseApp.Controllers
                 : "";
 
             var userId = User.Identity.GetUserId();
-
-
-        
-
         var model = new IndexViewModel
             {
                 HasPassword = HasPassword(),
@@ -89,37 +215,49 @@ namespace ExerciseApp.Controllers
                 BrowserRemembered = await AuthenticationManager.TwoFactorBrowserRememberedAsync(userId)
             };
 
+            
+
+            //Her samles de værdier som skal bruges for at vise profilsiden
             using (UserLevelXpEntities levelcontext = new UserLevelXpEntities())
             {
-
-                //var userlevel = levelcontext.EX_UserLevel.SingleOrDefault(u => u.UserId == userId).UserXp;
-                //var xpToSum = levelcontext.EX_UserLevel.Where(u => u.UserId == userId);
-                //int xpSum = xpToSum.AsQueryable().Sum(pkg => pkg.UserXp);
+                //if statementet er til for at undgå den null-error som kommer hvis databasen returnerer 0, når vi prøver at hente brugerens level
+                int xpSum;
                 if (!levelcontext.EX_UserLevel.Any())
                 {
-                    var xzzzzzzz = "wowowowo";
+                    xpSum = 0;
+                }
+                else
+                {
+                    var xpToSum = levelcontext.EX_UserLevel.Where(u => u.UserId == userId);
+                    xpSum = xpToSum.AsQueryable().Sum(pkg => pkg.UserXp);
+                }
+
+
+                var next = levelcontext.EX_LevelTable.FirstOrDefault(u => u.TotalLevelXp > xpSum);
+
+                int totalXpForThisLevel;
+                //if statementet er til for at undgå den null-error som kommer hvis databasen returnerer 0, når vi prøver at hente brugerens level
+                if (!levelcontext.EX_LevelTable.Any(u => u.LevelId == next.LevelId - 1))
+                {
+                    totalXpForThisLevel = 0;
                 } else
                 {
-                    var yzzzzzz = "wowowowowo";
+                    totalXpForThisLevel = levelcontext.EX_LevelTable.FirstOrDefault(u => u.LevelId == next.LevelId - 1).TotalLevelXp;
                 }
-                //int xpSumInt = xpSum.Value;
-                var next = levelcontext.EX_LevelTable.FirstOrDefault(u => u.TotalLevelXp > xpSumInt);
-
-                var totalXpForThisLevel = levelcontext.EX_LevelTable.FirstOrDefault(u => u.LevelId == next.LevelId - 1).TotalLevelXp;
-                var totalXpForThisLevelEquals = xpSumInt - totalXpForThisLevel;
+                
+                var totalXpForThisLevelEquals = xpSum - totalXpForThisLevel;
                 var totalXpForNextLevel = next.TotalLevelXp - totalXpForThisLevel;
 
-                model.UserTotalXp = xpSumInt;
+                //Informationen bindes til instancen af brugermodellen, og sendes til viewet
+                model.UserTotalXp = xpSum;
                 model.xpNeededForNext = next.TotalLevelXp;
-                model.currentUserLevel = next.LevelId-1;
+                model.currentUserLevel = next.LevelId - 1;
                 model.nextUserLevel = next.LevelId;
                 model.totalXpForThisLevelEquals = totalXpForThisLevelEquals;
                 model.totalXpForNextLevel = totalXpForNextLevel;
-                //IEnumerable<EX_UserLevel> totalUserXp = new List<EX_UserLevel>();
-                //totalUserXp = totalxp.ToList();
-                //model.UserTotalXp = totalUserXp;
+                IEnumerable<EX_UserLevel> totalUserXp = new List<EX_UserLevel>();
             }
-
+            //Informationer bindes til instancen af brugermodellen, og sendes til viewet
             using (UserSettingsEntities context = new UserSettingsEntities())
             {
                 EX_UserSettings user = context.EX_UserSettings.FirstOrDefault(r => r.UserId == userId);
@@ -130,6 +268,7 @@ namespace ExerciseApp.Controllers
                 var dt = user.UserBirthday;
                 model.UserBirthday = String.Format("{0:dd/MM/yyyy}", dt);
             };
+            
             return View(model);
         }
 
@@ -141,6 +280,7 @@ namespace ExerciseApp.Controllers
         [HttpGet]
         public ActionResult Categories()
         {   
+            //Henter listen med alle exercises fra databasen, og tilføjer dem til 'exercises' list-elementet fra modellen
             CategoryEntities context = new CategoryEntities();
             IEnumerable<EX_ExerciseTable> exercises = new List<EX_ExerciseTable>();
             exercises = context.EX_ExerciseTable.ToList();
@@ -149,11 +289,16 @@ namespace ExerciseApp.Controllers
         [HttpPost]
         public ActionResult Create(EX_UserExercise newExercise)
         {
-            
+            //Her oprettes der en ny entry i databasen med brugerens indtastede information
                 UserExerciseViewModeltest exercise = new UserExerciseViewModeltest();
                 var userid = User.Identity.GetUserId();
+            //exercisevalue1, 2 og 3 er kg, reps og sets. Disse værdier er sat til at være 1, i tilfælde af at der indtastes en træning med løb eller lign
+            //så hvis der er løbet 5km, er regnestykket 5*1*1, hvilket stadig er 5.
                 var exerciseValue = (newExercise.ExerciseValue1 * newExercise.ExerciseValue2 * newExercise.ExerciseValue3);
                 var ExerciseScorestep1 = exerciseValue * newExercise.ExerciseMultiplier;
+
+            //Outputtet divideres med 100, for at komme udenom en fejl hvor et kommatal ikke kunne sendes til controlleren, og derfor
+            //blev ganget med 100 for at give et helt tal
                 var ExerciseScoreResult = ExerciseScorestep1 / 100;
             using (UserInputExerciseEntities context = new UserInputExerciseEntities())
             {
@@ -164,10 +309,13 @@ namespace ExerciseApp.Controllers
                     ExerciseValue = exerciseValue,
                     ExerciseScore = ExerciseScoreResult,
                     ExerciseDate = DateTime.Now,
+                    UserPopupSeen = false,
                 };
                 context.EX_UserExercise.Add(userExercise);
                 context.SaveChanges();
             }
+
+            //Her tilføjes et entry til userlevel, for at holde styr på brugerens xp
             using (UserLevelXpEntities levelContext = new UserLevelXpEntities())
             {
                 EX_UserLevel userXp = new EX_UserLevel
@@ -178,12 +326,6 @@ namespace ExerciseApp.Controllers
                 levelContext.EX_UserLevel.Add(userXp);
                 levelContext.SaveChanges();
             }
-
-                    
-
-                
-
-            
             return RedirectToAction("Index", "Manage");
         }
 

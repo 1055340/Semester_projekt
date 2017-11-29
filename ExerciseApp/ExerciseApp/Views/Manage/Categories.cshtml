@@ -11,7 +11,7 @@
         {
             <div class="col-xs-6">
                 <div class="categories col-xs-12" data-toggle="modal" data-target="#categoryModal" data-return="@item.ExerciseType" data-value="@item.ExerciseMultiplier" data-id="@item.ExerciseId">
-                    <img style="filter: invert(100%); height: 75px; width: 75px;" class="category-images" src="~/images/@(item.ExerciseId).png" />
+                    <img style="filter: invert(100%); height: 75px; width: 75px;" class="category-images" src="~/images/cat-@(item.ExerciseId).png" />
                     <p>@Html.DisplayFor(modelItem => item.ExerciseName)</p>
                 </div>
             </div>

@@ -12,18 +12,10 @@ namespace ExerciseApp
     using System;
     using System.Collections.Generic;
     
-    public partial class EX_UserExercise
+    public partial class EX_UserLog
     {
         public string UserId { get; set; }
-        public int ExerciseId { get; set; }
-        public int ExerciseValue { get; set; }
-        public int ExerciseValue1 { get; set; }
-        public int ExerciseValue2 { get; set; }
-        public int ExerciseValue3 { get; set; }
-        public int ExerciseMultiplier { get; set; }
-        public int ExerciseScore { get; set; }
-        public System.DateTime ExerciseDate { get; set; }
-        public int UserExerciseId { get; set; }
-        public bool UserPopupSeen { get; set; }
+        public System.DateTime LoggedIn { get; set; }
+        public int id { get; set; }
     }
 }

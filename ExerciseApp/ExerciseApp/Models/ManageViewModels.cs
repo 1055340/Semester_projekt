@@ -28,6 +28,7 @@ namespace ExerciseApp.Models
         public bool TwoFactor { get; set; }
         public bool BrowserRemembered { get; set; }
     }
+    
     public class Achievements : DbContext
     {
         public int AchievementId { get; set; }
@@ -54,6 +55,26 @@ namespace ExerciseApp.Models
         public int ExerciseMultiplier { get; set; }
         public int ExerciseScore { get; set; }
         public System.DateTime ExerciseDate { get; set; }
+        public bool UserPopupSeen { get; set; }
+    }
+    public class UserInputPopup
+    {
+        public virtual IEnumerable<UserInputPopup> PopUps { get; set; }
+        public string UserId { get; set; }
+        public int ExerciseId { get; set; }
+        public int ExerciseScore { get; set; }
+        public System.DateTime ExerciseDate { get; set; }
+        public int currentUserLevel { get; set; }
+        public int xpNeededForNext { get; set; }
+        public int nextUserLevel { get; set; }
+        public int totalXpForThisLevelEquals { get; set; }
+        public int totalXpForNextLevel { get; set; }
+        public int currentUserXp { get; set; }
+        public int OldCurrentLevel { get; set; }
+        public int OldNextLevel { get; set; }
+        public int XpForCurrentLevelEquals { get; set; }
+        public int XpForNextLevelEquals { get; set; }
+
     }
     public class ManageLoginsViewModel
     {

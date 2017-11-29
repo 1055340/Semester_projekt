@@ -328,6 +328,7 @@ namespace ExerciseApp.Controllers
         [AllowAnonymous]
         public async Task<ActionResult> ExternalLoginCallback(string returnUrl)
         {
+
             var loginInfo = await AuthenticationManager.GetExternalLoginInfoAsync();
             if (loginInfo == null)
             {
@@ -339,13 +340,45 @@ namespace ExerciseApp.Controllers
                 
 
             }
-
             // Sign in the user with this external login provider if the user already has a login
             var result = await SignInManager.ExternalSignInAsync(loginInfo, isPersistent: false);
+            //var user = await UserManager.FindByEmailAsync(loginInfo.Email);
             switch (result)
             {
                 case SignInStatus.Success:
-                    
+
+                    //Brugerens login logges med hensyn til achievement, og efterfølgende tjekkes der om achievementet er opnået
+                    var Grant = SignInManager.AuthenticationManager.AuthenticationResponseGrant;
+                    string UserId = Grant.Identity.GetUserId();
+                    using (UserLoginLoggerEntities context = new UserLoginLoggerEntities())
+                    {
+                        EX_UserLog userLog = new EX_UserLog
+                        {
+                            UserId = UserId,
+                            LoggedIn = DateTime.Now,
+
+                        };
+                        context.EX_UserLog.Add(userLog);
+                        context.SaveChanges();
+
+                        var timesLoggedIn = context.EX_UserLog.Where(u => u.UserId == UserId).Count();
+                        using (UserAchievementEntities userachievementcontext = new UserAchievementEntities())
+                        {
+                            var alreadyHasAchievement = userachievementcontext.EX_UserAchievement.Any(u => u.AchievementId == 5);
+                            //Hvis achievementet ikke er opnået, men brugeren har logget ind 10 gange eller mere, tildeles achievementet
+                            if (timesLoggedIn >= 10 && alreadyHasAchievement == false)
+                            {
+                                EX_UserAchievement userachievement = new EX_UserAchievement
+                                {
+                                    UserId = UserId,
+                                    AchievementId = 5,
+                                };
+                                userachievementcontext.EX_UserAchievement.Add(userachievement);
+                                userachievementcontext.SaveChanges();
+                            } 
+                        }
+                    }
+
                     return RedirectToLocal(returnUrl);
                 case SignInStatus.LockedOut:
                     return View("Lockout");
@@ -356,9 +389,8 @@ namespace ExerciseApp.Controllers
                     // If the user does not have an account, then prompt the user to create an account
                     ViewBag.ReturnUrl = returnUrl;
                     ViewBag.LoginProvider = loginInfo.Login.LoginProvider;
-
                     
-
+                    
 
                     return View("ExternalLoginConfirmation", new ExternalLoginConfirmationViewModel {Email = loginInfo.Email});
             }
@@ -430,10 +462,11 @@ namespace ExerciseApp.Controllers
                             context.EX_UserSettings.Add(newUser);
                             context.SaveChanges();
                         }
+                        
 
 
 
-                        await SignInManager.SignInAsync(user, isPersistent: false, rememberBrowser: false);
+                            await SignInManager.SignInAsync(user, isPersistent: false, rememberBrowser: false);
                         return RedirectToLocal(returnUrl);
                     }
                 }

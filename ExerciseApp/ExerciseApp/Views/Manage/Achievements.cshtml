@@ -11,11 +11,16 @@
 
 @foreach(var item in Model)
 {
-    <div class="col-xs-12">
+    <div class="col-xs-12" data-id="@Html.DisplayFor(modelItem => item.AchievementId)">
             <p style="font-weight: bold;">@Html.DisplayFor(modelItem => item.AchievementName)</p>
-        <div class="col-xs-12">
-            <p style="font-size:.8em;">@Html.DisplayFor(modelItem => item.AchievementDescription)<span style="font-size:.9em; font-weight: bold;"> (@Html.DisplayFor(modelItem => item.AchievementScore) xp)</span></p>
-            
+        <div style="display:flex; padding: 10px 0;" class="row">
+            <div class="col-xs-6">
+                <p style="font-size:.8em;">@Html.DisplayFor(modelItem => item.AchievementDescription)<span style="font-size:.9em; font-weight: bold;"> (@Html.DisplayFor(modelItem => item.AchievementScore) xp)</span></p>
+
+            </div>
+            <div style="text-align:center;" class="col-xs-6">
+                <img style="filter: invert(100%); height: 75px; width: 75px;" class="category-images" src="~/images/ach-@(item.AchievementId).png" />
+            </div>
         </div>
     </div>
     

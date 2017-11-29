@@ -3,6 +3,8 @@
     string profile_picture = "https://graph.facebook.com/" + @Model.UserId + "/picture?type=large";
 }
 
+
+<div class="xp-popup"></div>
 <div class="row">
     <div class="col-md-12">
         <div class="col-md-3">
@@ -18,11 +20,13 @@
                 </div>
                 <div class="xp-bar col-xs-10">
                     <div style="text-align:center"></div>
-                        <p>@Model.totalXpForThisLevelEquals xp / @Model.totalXpForNextLevel xp</p>
                 </div>
                 <div class="next-level col-xs-1 pull-right">
                     <span>@Model.nextUserLevel</span>
                 </div>
+            </div>
+            <div style="text-align:center;" class="col-xs-12">
+                <p>@Model.totalXpForThisLevelEquals/@Model.totalXpForNextLevel XP</p>
             </div>
         </div>
         
@@ -39,3 +43,4 @@
 
     
 </div>
+

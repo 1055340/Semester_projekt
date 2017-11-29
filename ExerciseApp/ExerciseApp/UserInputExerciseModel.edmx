@@ -15,6 +15,7 @@
           <Property Name="ExerciseScore" Type="int" Nullable="false" />
           <Property Name="ExerciseDate" Type="datetime" Nullable="false" />
           <Property Name="UserExerciseId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="UserPopupSeen" Type="bit" Nullable="false" />
         </EntityType>
         <EntityContainer Name="UserInputExerciseModelStoreContainer">
           <EntitySet Name="EX_UserExercise" EntityType="Self.EX_UserExercise" Schema="dbo" store:Type="Tables" />
@@ -33,6 +34,7 @@
           <Property Name="ExerciseScore" Type="Int32" Nullable="false" />
           <Property Name="ExerciseDate" Type="DateTime" Nullable="false" Precision="3" />
           <Property Name="UserExerciseId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="UserPopupSeen" Type="Boolean" Nullable="false" />
         </EntityType>
         <EntityContainer Name="UserInputExerciseEntities" annotation:LazyLoadingEnabled="true">
           <EntitySet Name="EX_UserExercise" EntityType="Self.EX_UserExercise" />
@@ -46,6 +48,7 @@
           <EntitySetMapping Name="EX_UserExercise">
             <EntityTypeMapping TypeName="UserInputExerciseModel.EX_UserExercise">
               <MappingFragment StoreEntitySet="EX_UserExercise">
+                <ScalarProperty Name="UserPopupSeen" ColumnName="UserPopupSeen" />
                 <ScalarProperty Name="UserId" ColumnName="UserId" />
                 <ScalarProperty Name="ExerciseId" ColumnName="ExerciseId" />
                 <ScalarProperty Name="ExerciseValue" ColumnName="ExerciseValue" />

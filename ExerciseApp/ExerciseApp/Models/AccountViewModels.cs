@@ -8,6 +8,17 @@ namespace ExerciseApp.Models
     {
         public string Email { get; set; }
     }
+    public class UserLog
+    {
+        public string UserId { get; set; }
+        public System.DateTime LoggedIn { get; set; }
+    }
+    public class UserAchievement
+    {
+        public string UserId { get; set; }
+        public int AchievementId { get; set; }
+        public int id { get; set; }
+    }
 
     public class ExternalLoginConfirmationViewModel
     {

@@ -66,11 +66,10 @@ textarea {
     overflow: hidden;
 }
 .level-container .xp-bar > div {
-    background-color: #b2b2b2;
-    border: 1px solid #efefef;
+    background-color: #fff;
+    border: 1px solid #fff;
     height: 100%;
     width: 0%;
-    padding: 5px;
     overflow: hidden;
     white-space: nowrap;
 }
@@ -87,12 +86,7 @@ textarea {
     text-align: center;
     border: 1px solid #e9e9e9;
 }
-.level-container .current-level {
-    border-right: 3px solid #0094ff;
-}
-.level-container .next-level {
-    border-left: 3px solid #0094ff;
-}
+
 
 /*Navbar Customization*/
 
@@ -104,6 +98,12 @@ textarea {
 .navmenu-nav {
     display: block;
 }
+.nav > li > form > a {
+    position: relative;
+    display: block;
+    padding: 10px 15px;
+    color: #000;
+}
 
 /*Achievements*/
 .achievement-container > div {
@@ -111,4 +111,35 @@ textarea {
 }
 .achievement-container > div > p {
     margin: 10px 0;
+}
+
+/*Xp popup*/
+.xp-popup {
+    z-index: 0;
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    background-color: rgba(0,0,0,0.75);
+    opacity: 0;
+    transition: opacity 1s, z-index 2.5s;
+}
+.xp-popup > div > .popup-img {
+    text-align: center;
+}
+.xp-popup > div > .level-container {
+    border: none;
+    margin: 15px;
+}
+
+
+.xp-popup > div > .level-container > .current-level, .xp-popup > div > .level-container > .next-level  {
+    color: #fff;
+}
+
+.popup-fadein {
+    z-index: 3000;
+    opacity: 1;
+    transition: opacity 1s;
 }
