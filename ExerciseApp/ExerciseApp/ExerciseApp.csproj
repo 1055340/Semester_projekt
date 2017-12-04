@@ -404,6 +404,7 @@
     <Content Include="images\cat-9.png" />
     <Content Include="image\blank.gif" />
     <Content Include="image\particles.gif" />
+    <Content Include="Scripts\achievements.js" />
     <Content Include="Scripts\anime.min.js" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />

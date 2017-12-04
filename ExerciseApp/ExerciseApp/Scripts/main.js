@@ -1,6 +1,40 @@
 ﻿$(document).ready(function () {
 
     $.ajax({
+        url: '/Manage/GetUserAchievements',
+        type: 'Post',
+        datatype: 'json',
+        data: { order: 'Client_Call' },
+        success: function (data) {
+            var JsonArray = JSON.parse(data);
+            var i = 0, l = JsonArray.length;
+            
+            var obj = JsonArray[i];
+            $('.xp-popup').addClass('popup-fadein');
+            (function iterator() {
+                console.log(JsonArray[i].AchievementId);
+                var achievementimg = '<img style="width:100px;height:100px;" src = "/images/ach-' + JsonArray[i].AchievementId + '.png" />';
+                $('.achievement-popup').empty();
+                $(achievementimg).hide().appendTo('.achievement-popup').fadeIn(1000);
+                $('<p style="color:#fff">Achievement unlocked!</p>').hide().appendTo('.achievement-popup').fadeIn(1000);
+                $('<p style="color:#fff">' + JsonArray[i].AchievementName + '</p>').hide().appendTo('.achievement-popup').fadeIn(1000);
+                if (++i < l) {
+                    setTimeout(iterator, 2000);
+                } else {
+                    $('.achievement-popup').delay(2000).fadeOut(1000);
+                    setTimeout(function () {
+                        $('.xp-popup').removeClass('popup-fadein');
+                    }, 2000);
+                    
+                }
+            })();
+        },
+        error: function (data) {
+            console.log("error");
+        },
+    });
+
+    $.ajax({
         url: '/Manage/GetXpPopup',
         type: 'Post',
         datatype: 'json',
@@ -98,7 +132,7 @@
                             } else {
                                 $('.xp-popup > div > .xp-reward').text("Rewarded " + obj.ExerciseScore + " XP.. There you go!");
                                 setTimeout(function () {
-                                    $('.xp-popup').removeClass('popup-fadein');
+                                    //$('.xp-popup').removeClass('popup-fadein');
                                 }, 1500);
                                 return;
                             }
@@ -144,6 +178,5 @@
     $('.level-container > .xp-bar > div').animate({
         width: (xpProgress + '%')
     }, 1000);
-//$('.level-container > .xp-bar > div').width(xpProgress + '%');
 }); 
 

@@ -364,14 +364,27 @@ namespace ExerciseApp.Controllers
                         var timesLoggedIn = context.EX_UserLog.Where(u => u.UserId == UserId).Count();
                         using (UserAchievementEntities userachievementcontext = new UserAchievementEntities())
                         {
-                            var alreadyHasAchievement = userachievementcontext.EX_UserAchievement.Any(u => u.AchievementId == 5);
+                            var alreadyHasAchievement4 = userachievementcontext.EX_UserAchievement.Any(u => u.AchievementId == 4);
+                            var alreadyHasAchievement5 = userachievementcontext.EX_UserAchievement.Any(u => u.AchievementId == 5);
+
                             //Hvis achievementet ikke er opnået, men brugeren har logget ind 10 gange eller mere, tildeles achievementet
-                            if (timesLoggedIn >= 10 && alreadyHasAchievement == false)
+                            if (timesLoggedIn >= 1 && alreadyHasAchievement4 == false) {
+                                EX_UserAchievement userachievement = new EX_UserAchievement
+                                {
+                                    UserId = UserId,
+                                    AchievementId = 4,
+                                    UserSeen = false,
+                                };
+                                userachievementcontext.EX_UserAchievement.Add(userachievement);
+                                userachievementcontext.SaveChanges();
+                            }
+                            if (timesLoggedIn >= 10 && alreadyHasAchievement5 == false)
                             {
                                 EX_UserAchievement userachievement = new EX_UserAchievement
                                 {
                                     UserId = UserId,
                                     AchievementId = 5,
+                                    UserSeen = false,
                                 };
                                 userachievementcontext.EX_UserAchievement.Add(userachievement);
                                 userachievementcontext.SaveChanges();

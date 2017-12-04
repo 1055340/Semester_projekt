@@ -80,7 +80,14 @@ namespace ExerciseApp.Models
         public int OldNextLevel { get; set; }
         public int XpForCurrentLevelEquals { get; set; }
         public int XpForNextLevelEquals { get; set; }
-
+    }
+    public class UserAchievementPopup
+    {
+        public int AchievementId { get; set; }
+        public string AchievementName { get; set; }
+        public string AchievementDescription { get; set; }
+        public int AchievementScore { get; set; }
+        public virtual IEnumerable<UserAchievements> UserAchievementList { get; set; }
     }
     public class ManageLoginsViewModel
     {

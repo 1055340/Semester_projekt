@@ -17,5 +17,6 @@ namespace ExerciseApp
         public string UserId { get; set; }
         public int AchievementId { get; set; }
         public int id { get; set; }
+        public bool UserSeen { get; set; }
     }
 }

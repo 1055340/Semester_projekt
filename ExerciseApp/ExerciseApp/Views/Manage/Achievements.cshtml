@@ -1,8 +1,9 @@
 ﻿@model IEnumerable<ExerciseApp.EX_AchievementTable>
-
 @{
     ViewBag.Title = "Achievements";
 }
+<script src="/Scripts/jquery-3.2.1.js"></script>
+<script src="~/Scripts/achievements.js"></script>
 
 <h2>Achievements</h2>
 
@@ -12,7 +13,7 @@
 @foreach(var item in Model)
 {
     
-    <div class="col-xs-12" data-id="@Html.DisplayFor(modelItem => item.AchievementId)">
+    <div class="col-xs-12 not-achieved" data-id="@Html.DisplayFor(modelItem => item.AchievementId)">
         <div class="overlay"></div>
             <p style="font-weight: bold;">@Html.DisplayFor(modelItem => item.AchievementName) </p>
         <div style="display:flex; padding: 10px 0;" class="row">

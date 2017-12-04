@@ -58,6 +58,7 @@ namespace ExerciseApp.Controllers
         [HttpGet]
         public ActionResult Achievements()
         {
+            //Listen med alle achievements hentes i databasen
             AchievementsEntities context = new AchievementsEntities();
             IEnumerable<EX_AchievementTable> achievements = new List<EX_AchievementTable>();
             achievements = context.EX_AchievementTable.ToList();
@@ -66,14 +67,51 @@ namespace ExerciseApp.Controllers
         [HttpPost]
         public JsonResult GetUserAchievements()
         {
+            //de achievements som brugeren har opnået, hentes i databasen
+            var userId = User.Identity.GetUserId();
             using (UserAchievementEntities userachievementcontext = new UserAchievementEntities())
             {
-                IEnumerable<EX_UserAchievement> userachievements = new List<EX_UserAchievement>();
-                userachievements = userachievementcontext.EX_UserAchievement.ToList();
-
-                return (userachievements);
+                using (AchievementsEntities achievements = new AchievementsEntities())
+                {
+                    string json = "";
+                    IEnumerable<EX_UserAchievement> userachievements = new List<EX_UserAchievement>();
+                    IEnumerable<EX_AchievementTable> userachievementinfo = new List<EX_AchievementTable>();
+                    userachievements = userachievementcontext.EX_UserAchievement.Where(u => u.UserId == userId).Where(u => u.UserSeen == false).ToList();
+                    List<UserAchievementPopup> popups = new List<UserAchievementPopup>();
+                    foreach (var item in userachievements)
+                    {
+                        userachievementinfo = achievements.EX_AchievementTable.Where(u => u.AchievementId == item.AchievementId);
+                        foreach (var achs in userachievementinfo)
+                        {
+                            UserAchievementPopup unlockedachievement = new UserAchievementPopup();
+                            unlockedachievement.AchievementId = item.AchievementId;
+                            unlockedachievement.AchievementName = achs.AchievementName;
+                            unlockedachievement.AchievementDescription = achs.AchievementDescription;
+                            unlockedachievement.AchievementScore = achs.AchievementScore;
+                            popups.Add(unlockedachievement);
+                        }
+                    }
+                json = JsonConvert.SerializeObject(popups);
+                return Json(json);
+                }   
             }
         }
+
+        [HttpPost]
+        public JsonResult UserAchievementsUpdated()
+        {
+            using (UserAchievementEntities userachievementcontext = new UserAchievementEntities())
+            {
+                var userId = User.Identity.GetUserId();
+                string json = "";
+                IEnumerable<EX_UserAchievement> UserAchievementList = new List<EX_UserAchievement>();
+                UserAchievementList = userachievementcontext.EX_UserAchievement.Where(u => u.UserId == userId).ToList();
+                json = JsonConvert.SerializeObject(UserAchievementList);
+                return Json(json);
+            }
+        }
+
+
         [HttpPost]
         //Json kode som tjekker om brugeren har en uvist popup efter at have tilføjet en træning
         public JsonResult GetXpPopup()
@@ -103,6 +141,41 @@ namespace ExerciseApp.Controllers
                     //Så udregner vi nuværende xp, xp for næste level, nuværende level og næste level som skal vises i popup'en
                     var xpSum = totalUserXp;
                     var next = levelcontext.EX_LevelTable.FirstOrDefault(u => u.TotalLevelXp > xpSum);
+
+                    //Tjekker om brugerens næste level udløser et achievement
+                    using (UserAchievementEntities userachievements = new UserAchievementEntities())
+                    {
+                        var currentlevel = next.LevelId;
+                        if (currentlevel > 1 && !userachievements.EX_UserAchievement.Any(u => u.AchievementId == 1))
+                        {
+                            EX_UserAchievement uachievement1 = new EX_UserAchievement();
+                            uachievement1.AchievementId = 1;
+                            uachievement1.UserId = userId;
+                            uachievement1.UserSeen = false;
+                            userachievements.EX_UserAchievement.Add(uachievement1);
+                        }
+                        
+                        if (currentlevel > 5 && !userachievements.EX_UserAchievement.Any(u => u.AchievementId == 2)) {
+                            EX_UserAchievement uachievement2 = new EX_UserAchievement();
+                            uachievement2.AchievementId = 2;
+                            uachievement2.UserId = userId;
+                            uachievement2.UserSeen = false;
+                            userachievements.EX_UserAchievement.Add(uachievement2);
+                        }
+                        
+                        if (currentlevel > 10 && !userachievements.EX_UserAchievement.Any(u => u.AchievementId == 3)) {
+                            EX_UserAchievement uachievement3 = new EX_UserAchievement();
+                            uachievement3.AchievementId = 3;
+                            uachievement3.UserId = userId;
+                            uachievement3.UserSeen = false;
+                            userachievements.EX_UserAchievement.Add(uachievement3);
+                        }
+                        
+
+                        userachievements.SaveChanges();
+                    }
+                    
+                    //Achievements end
                     int totalXpForThisLevel;
                     
                     //if statementet er til for at undgå den null-error som kommer hvis databasen returnerer 0, når vi prøver at hente brugerens level
@@ -141,18 +214,126 @@ namespace ExerciseApp.Controllers
                         OldCurrentLevel = levelcontext.EX_LevelTable.OrderByDescending(o => o.TotalLevelXp).FirstOrDefault(u => u.TotalLevelXp < currentxp).LevelId;
                         OldCurrentLevelXp = levelcontext.EX_LevelTable.OrderByDescending(o => o.TotalLevelXp).FirstOrDefault(u => u.TotalLevelXp < currentxp).TotalLevelXp;
                     }
+                    //Så udregner vi nuværende xp, xp for næste level, nuværende level og næste level som skal vises i popup'en
                     var XpForCurrentLevelEquals = currentxp - OldCurrentLevelXp;
                     var OldNextLevel = levelcontext.EX_LevelTable.FirstOrDefault(u => u.TotalLevelXp > currentxp);
                     var XpForNextLevelEquals = OldNextLevel.TotalLevelXp - OldCurrentLevelXp;
 
 
-                    //Så udregner vi nuværende xp, xp for næste level, nuværende level og næste level som skal vises i popup'en
-                    //var OldxpSum = OldtotalUserXp-;
 
-
-
-
-
+                    //Tjekker om brugeren har opnået achievement 6, 7, 8, 9, 10 eller 11
+                    using (UserAchievementEntities userachievements = new UserAchievementEntities())
+                    {
+                        //Tjekker for achievement 6
+                        var alreadyHasAchievement6 = userachievements.EX_UserAchievement.Any(u => u.AchievementId == 6);
+                        if (alreadyHasAchievement6 == false)
+                        {
+                            var Achievement6 = userexercisecontext.EX_UserExercise.Where(u => u.ExerciseId == 8);
+                            var totalrunningkm = 0;
+                            foreach (var runningkm in Achievement6)
+                            {
+                                totalrunningkm += runningkm.ExerciseValue;
+                            }
+                            if (totalrunningkm >= 42.195)
+                            {
+                                EX_UserAchievement achievement6 = new EX_UserAchievement();
+                                achievement6.AchievementId = 6;
+                                achievement6.UserId = userId;
+                                achievement6.UserSeen = false;
+                                userachievements.EX_UserAchievement.Add(achievement6);
+                            }
+                        }
+                        //Tjekker for achievement 7
+                        var alreadyHasAchievement7 = userachievements.EX_UserAchievement.Any(u => u.AchievementId == 7);
+                        if (alreadyHasAchievement7 == false)
+                        {
+                            var Achievement7 = userexercisecontext.EX_UserExercise.Where(u => u.ExerciseId == 6);
+                            var totalrowingkm = 0;
+                            foreach (var rowingkm in Achievement7)
+                            {
+                                totalrowingkm += rowingkm.ExerciseValue;
+                            }
+                            if (totalrowingkm >= 250)
+                            {
+                                EX_UserAchievement achievement7 = new EX_UserAchievement();
+                                achievement7.AchievementId = 7;
+                                achievement7.UserId = userId;
+                                achievement7.UserSeen = false;
+                                userachievements.EX_UserAchievement.Add(achievement7);
+                            }
+                        }
+                        //Tjekker for achievement 8
+                        var alreadyHasAchievement8 = userachievements.EX_UserAchievement.Any(u => u.AchievementId == 8);
+                        if (alreadyHasAchievement8 == false)
+                        {
+                            var Achievement8 = userexercisecontext.EX_UserExercise.Where(u => u.ExerciseId == 3);
+                            var totalbenchingkg = 0;
+                            foreach (var benchingkg in Achievement8)
+                            {
+                                totalbenchingkg += benchingkg.ExerciseValue;
+                            }
+                            if (totalbenchingkg >= 10000)
+                            {
+                                EX_UserAchievement achievement8 = new EX_UserAchievement();
+                                achievement8.AchievementId = 8;
+                                achievement8.UserId = userId;
+                                achievement8.UserSeen = false;
+                                userachievements.EX_UserAchievement.Add(achievement8);
+                            }
+                        }
+                        //Tjekker for achievement 9
+                        var alreadyHasAchievement9 = userachievements.EX_UserAchievement.Any(u => u.AchievementId == 9);
+                        if (alreadyHasAchievement9 == false)
+                        {
+                            var Achievement9 = userexercisecontext.EX_UserExercise.Where(u => u.ExerciseId == 9);
+                            var totalbikekm = 0;
+                            foreach (var bikekm in Achievement9)
+                            {
+                                totalbikekm += bikekm.ExerciseValue;
+                            }
+                            if (totalbikekm >= 250)
+                            {
+                                EX_UserAchievement achievement9 = new EX_UserAchievement();
+                                achievement9.AchievementId = 9;
+                                achievement9.UserId = userId;
+                                achievement9.UserSeen = false;
+                                userachievements.EX_UserAchievement.Add(achievement9);
+                            }
+                        }
+                        //Tjekker for achievement 11 (triathlon) (achievement 10 er: vind en challenge og tjekkes et andet sted)
+                        var alreadyHasAchievement11 = userachievements.EX_UserAchievement.Any(u => u.AchievementId == 11);
+                        if (alreadyHasAchievement11 == false)
+                        {
+                            var Achievement11swim = userexercisecontext.EX_UserExercise.Where(u => u.ExerciseId == 10);
+                            var totalswimkm = 0;
+                            foreach (var swimkm in Achievement11swim)
+                            {
+                                totalswimkm += swimkm.ExerciseValue;
+                            }
+                            var Achievement11bike = userexercisecontext.EX_UserExercise.Where(u => u.ExerciseId == 9);
+                            var totalbikekm = 0;
+                            foreach (var bikekm in Achievement11bike)
+                            {
+                                totalbikekm += bikekm.ExerciseValue;
+                            }
+                            var Achievement11run = userexercisecontext.EX_UserExercise.Where(u => u.ExerciseId == 8);
+                            var totalrunkm = 0;
+                            foreach (var runkm in Achievement11bike)
+                            {
+                                totalrunkm += runkm.ExerciseValue;
+                            }
+                            if (totalswimkm >= 1.5 && totalbikekm >= 40 && totalrunkm >= 10)
+                            {
+                                EX_UserAchievement achievement11 = new EX_UserAchievement();
+                                achievement11.AchievementId = 11;
+                                achievement11.UserId = userId;
+                                achievement11.UserSeen = false;
+                                userachievements.EX_UserAchievement.Add(achievement11);
+                            }
+                        }
+                        userachievements.SaveChanges();
+                    }
+                    //Achievements end
 
 
                     string json = "";
@@ -193,7 +374,7 @@ namespace ExerciseApp.Controllers
                         popup.XpForNextLevelEquals = XpForNextLevelEquals;
                         popups.Add(popup);
                     }
-
+                    //Værdien i databasen for om brugeren har set popup'en ændres, så den ikke vises mere end en gang
                     foreach (var unchangedpopups in userexercisecontext.EX_UserExercise.Where(x => x.UserId == userId))
                     {
                         unchangedpopups.UserPopupSeen = true;

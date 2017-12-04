@@ -4,7 +4,7 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-      <Schema Namespace="UserAchievementModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+    <Schema Namespace="UserAchievementModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
         <EntityType Name="EX_UserAchievement">
           <Key>
             <PropertyRef Name="id" />
@@ -12,12 +12,12 @@
           <Property Name="UserId" Type="nvarchar" MaxLength="128" Nullable="false" />
           <Property Name="AchievementId" Type="int" Nullable="false" />
           <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="UserSeen" Type="bit" Nullable="false" />
         </EntityType>
         <EntityContainer Name="UserAchievementModelStoreContainer">
           <EntitySet Name="EX_UserAchievement" EntityType="Self.EX_UserAchievement" Schema="dbo" store:Type="Tables" />
         </EntityContainer>
-      </Schema>
-    </edmx:StorageModels>
+      </Schema></edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="UserAchievementModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
@@ -28,6 +28,7 @@
           <Property Name="UserId" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
           <Property Name="AchievementId" Type="Int32" Nullable="false" />
           <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="UserSeen" Type="Boolean" Nullable="false" />
         </EntityType>
         <EntityContainer Name="UserAchievementEntities" annotation:LazyLoadingEnabled="true">
           <EntitySet Name="EX_UserAchievement" EntityType="Self.EX_UserAchievement" />
@@ -41,6 +42,7 @@
           <EntitySetMapping Name="EX_UserAchievement">
             <EntityTypeMapping TypeName="UserAchievementModel.EX_UserAchievement">
               <MappingFragment StoreEntitySet="EX_UserAchievement">
+                <ScalarProperty Name="UserSeen" ColumnName="UserSeen" />
                 <ScalarProperty Name="UserId" ColumnName="UserId" />
                 <ScalarProperty Name="AchievementId" ColumnName="AchievementId" />
                 <ScalarProperty Name="id" ColumnName="id" />
