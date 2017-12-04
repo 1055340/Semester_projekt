@@ -24,10 +24,13 @@
 
                 //Popup'ens indhold bygges
                 $('.xp-popup').addClass('popup-fadein');
+                
                 var xpProgress = (obj.XpForCurrentLevelEquals / obj.XpForNextLevelEquals) * 100;
                 var ImgBuilder = "<img src='/images/cat-" + obj.ExerciseId + ".png' />";
                 var xpGained = "Rewarding " + obj.ExerciseScore + " XP";
-                $('.xp-popup').append("<div class='row'><div class='col-xs-12 popup-img'>" + ImgBuilder + "</div><div style='display:flex' class='level-container col-xs-12'><div class='current-level col-xs-1'><span> " + obj.OldCurrentLevel + "</span></div><div class='xp-bar col-xs-10'><div style='text-align:center'></div></div><div class='next-level col-xs-1 pull-right'><span> " + obj.OldNextLevel + "</span></div></div></div><div style='text-align:center; color:#fff;' class='col-xs-12'><p class='xp-reward'> " + xpGained + "</p></div>");
+                var currentXp = obj.XpForCurrentLevelEquals;
+                var targetXp = obj.XpForNextLevelEquals;
+                $('.xp-popup').append("<div class='row'><div class='col-xs-12 popup-img'>" + ImgBuilder + "</div><div style='display:flex' class='level-container col-xs-12'><div class='current-level col-xs-1'><span> " + obj.OldCurrentLevel + "</span><p style='font-size:.6em;'>" + currentXp + "</p></div><div class='xp-bar col-xs-10'><div style='text-align:center'></div></div><div class='next-level col-xs-1 pull-right'><span> " + obj.OldNextLevel + "</span><p style='font-size:.6em;'>" + targetXp + "</p></div></div></div><div style='text-align:center; color:#fff;' class='col-xs-12'><p class='xp-reward'> " + xpGained + "</p></div>");
                 $('.xp-popup > div > .level-container > .xp-bar > div').width(xpProgress + 2 + '%');
 
                 //xp baren animeres i et for loop, delayet med 2ms
@@ -43,6 +46,8 @@
                         }
                         else
                             xpGained++;
+                        currentXp++;
+                        $('.current-level > p').text(currentXp);
                         $('.xp-popup > div > .xp-reward').text("Rewarding " + i + " XP");
                         var xpProgress = (xpGained / obj.XpForNextLevelEquals) * 100;
                         console.log("i is = " + i);
@@ -62,10 +67,11 @@
                 }, 1500);
                 //Dette funktion håndterer den resterende xp som skal gives i det nye level
                 function ding(i) {
+                    currentXp = 0;
                     console.log("Xp remaining: " + i);
                     $('.xp-popup > div > .level-container > .xp-bar > div').width('0%');
                     $('.xp-popup > div').remove();
-                    $('.xp-popup').append("<div class='row'><div class='col-xs-12 popup-img'>" + ImgBuilder + "</div><div style='display:flex' class='level-container col-xs-12'><div class='current-level col-xs-1'><span> " + obj.currentUserLevel + "</span></div><div class='xp-bar col-xs-10'><div style='text-align:center'></div></div><div class='next-level col-xs-1 pull-right'><span> " + obj.nextUserLevel + "</span></div></div></div><div style='text-align:center; color:#fff;' class='col-xs-12'><p class='xp-reward'> " + obj.ExerciseScore + " XP gained!</p></div>");
+                    $('.xp-popup').append("<div id='container1'> <div id='fireworks'> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> </div> </div><div class='row'><div class='col-xs-12 popup-img'>" + ImgBuilder + "</div><div style='display:flex' class='level-container col-xs-12'><div class='current-level col-xs-1'><span> " + obj.currentUserLevel + "</span><p style='font-size:.6em;'>" + currentXp + "</p></div><div class='xp-bar col-xs-10'><div style='text-align:center'></div></div><div class='next-level col-xs-1 pull-right'><span> " + obj.nextUserLevel + "</span><p style='font-size:.6em;'>" + targetXp + "</p></div></div></div><div style='text-align:center; color:#fff;' class='col-xs-12'><p class='xp-reward'> " + obj.ExerciseScore + " XP gained!</p></div>");
 
                     var iEquals = i;
                     var xpGained = 0;
@@ -78,7 +84,9 @@
                                 return;
                             }
                             else
-                            xpGained++;
+                                xpGained++;
+                            currentXp++;
+                            $('.current-level > p').text(currentXp);
                             iEquals--;
                             $('.xp-popup > div > .xp-reward').text("Rewarding " + i + " XP");
                             var xpProgress = (xpGained / obj.totalXpForNextLevel) * 100;
@@ -138,3 +146,4 @@
     }, 1000);
 //$('.level-container > .xp-bar > div').width(xpProgress + '%');
 }); 
+

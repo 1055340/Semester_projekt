@@ -11,8 +11,10 @@
 
 @foreach(var item in Model)
 {
+    
     <div class="col-xs-12" data-id="@Html.DisplayFor(modelItem => item.AchievementId)">
-            <p style="font-weight: bold;">@Html.DisplayFor(modelItem => item.AchievementName)</p>
+        <div class="overlay"></div>
+            <p style="font-weight: bold;">@Html.DisplayFor(modelItem => item.AchievementName) </p>
         <div style="display:flex; padding: 10px 0;" class="row">
             <div class="col-xs-6">
                 <p style="font-size:.8em;">@Html.DisplayFor(modelItem => item.AchievementDescription)<span style="font-size:.9em; font-weight: bold;"> (@Html.DisplayFor(modelItem => item.AchievementScore) xp)</span></p>

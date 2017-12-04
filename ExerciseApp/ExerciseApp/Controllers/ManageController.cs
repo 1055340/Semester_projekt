@@ -63,8 +63,17 @@ namespace ExerciseApp.Controllers
             achievements = context.EX_AchievementTable.ToList();
             return View(achievements);
         }
+        [HttpPost]
+        public JsonResult GetUserAchievements()
+        {
+            using (UserAchievementEntities userachievementcontext = new UserAchievementEntities())
+            {
+                IEnumerable<EX_UserAchievement> userachievements = new List<EX_UserAchievement>();
+                userachievements = userachievementcontext.EX_UserAchievement.ToList();
 
-
+                return (userachievements);
+            }
+        }
         [HttpPost]
         //Json kode som tjekker om brugeren har en uvist popup efter at have tilføjet en træning
         public JsonResult GetXpPopup()
@@ -121,17 +130,20 @@ namespace ExerciseApp.Controllers
                     }
                     int currentxp = xpSum - xptowithdraw;
                     int OldCurrentLevel;
+                    var OldCurrentLevelXp = 0;
                     if (!levelcontext.EX_LevelTable.Any(u => u.TotalLevelXp < currentxp))
                     {
+                        OldCurrentLevel = 0;
                         OldCurrentLevel = 0;
                     }
                     else
                     {
                         OldCurrentLevel = levelcontext.EX_LevelTable.OrderByDescending(o => o.TotalLevelXp).FirstOrDefault(u => u.TotalLevelXp < currentxp).LevelId;
+                        OldCurrentLevelXp = levelcontext.EX_LevelTable.OrderByDescending(o => o.TotalLevelXp).FirstOrDefault(u => u.TotalLevelXp < currentxp).TotalLevelXp;
                     }
-                    var XpForCurrentLevelEquals = currentxp - OldCurrentLevel;
+                    var XpForCurrentLevelEquals = currentxp - OldCurrentLevelXp;
                     var OldNextLevel = levelcontext.EX_LevelTable.FirstOrDefault(u => u.TotalLevelXp > currentxp);
-                    var XpForNextLevelEquals = OldNextLevel.TotalLevelXp - OldCurrentLevel;
+                    var XpForNextLevelEquals = OldNextLevel.TotalLevelXp - OldCurrentLevelXp;
 
 
                     //Så udregner vi nuværende xp, xp for næste level, nuværende level og næste level som skal vises i popup'en

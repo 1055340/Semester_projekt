@@ -28,7 +28,13 @@ namespace ExerciseApp.Models
         public bool TwoFactor { get; set; }
         public bool BrowserRemembered { get; set; }
     }
-    
+    public class UserAchievements : DbContext
+    {
+        public string UserId { get; set; }
+        public int AchievementId { get; set; }
+        public int id { get; set; }
+        public virtual IEnumerable<UserAchievements> Achievements { get; set; }
+    }
     public class Achievements : DbContext
     {
         public int AchievementId { get; set; }
