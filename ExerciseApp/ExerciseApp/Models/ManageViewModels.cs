@@ -3,6 +3,7 @@ using System.ComponentModel.DataAnnotations;
 using Microsoft.AspNet.Identity;
 using Microsoft.Owin.Security;
 using System.Data.Entity;
+using Newtonsoft.Json;
 
 namespace ExerciseApp.Models
 {
@@ -81,6 +82,48 @@ namespace ExerciseApp.Models
         public int XpForCurrentLevelEquals { get; set; }
         public int XpForNextLevelEquals { get; set; }
     }
+
+    //Klasserne Data, Picture, Datum, Cursors, Paging, Summary og Rootobject er genereret fra www.json2csharp.com
+    public class Data
+    {
+        public string url { get; set; }
+    }
+
+    public class Picture
+    {
+        public Data data { get; set; }
+    }
+
+    public class Datum
+    {
+        public string name { get; set; }
+        public Picture picture { get; set; }
+        public string id { get; set; }
+    }
+
+    public class Cursors
+    {
+        public string before { get; set; }
+        public string after { get; set; }
+    }
+
+    public class Paging
+    {
+        public Cursors cursors { get; set; }
+    }
+
+    public class Summary
+    {
+        public int total_count { get; set; }
+    }
+
+    public class RootObject
+    {
+        public List<Datum> data { get; set; }
+        public Paging paging { get; set; }
+        public Summary summary { get; set; }
+    }
+
     public class UserAchievementPopup
     {
         public int AchievementId { get; set; }

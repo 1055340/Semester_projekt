@@ -1,0 +1,24 @@
+﻿@model ExerciseApp.Models.RootObject
+
+@{
+    ViewBag.Title = "ChallengeFriendList";
+}
+
+@foreach (var item in Model.data)
+{
+    <div class="row">
+        <div style="padding: 15px; border-bottom: 1px solid #e9e9e9;" class="col-xs-12">
+            <div class="col-xs-3">
+                <img style="border-radius:200px; height: 65px; width: 65px;" src="@Html.DisplayFor(modelItem => item.picture.data.url)" />
+            </div>
+            <div class="col-xs-5" style="padding: 20px 0;">
+                <span style="font-weight:bold; margin: 15px 0px;">@Html.DisplayFor(modelItem => item.name)</span>
+            </div>
+            <div class="col-xs-4" style="padding: 15px 0;">
+                <a style="float:right;" class="btn btn-success" href="/manage/ChallengeCategories">></a>
+            </div>
+        </div>
+    </div>
+}
+
+

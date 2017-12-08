@@ -10,7 +10,9 @@ using ExerciseApp.Models;
 using System.Data.Entity;
 using System.Collections.Generic;
 using Newtonsoft.Json;
-
+using Facebook;
+using System.Web.Script.Serialization;
+using Newtonsoft.Json.Linq;
 
 namespace ExerciseApp.Controllers
 {
@@ -53,7 +55,21 @@ namespace ExerciseApp.Controllers
                 _userManager = value;
             }
         }
-
+        [HttpGet]
+        public ActionResult ChallengeFriendList()
+        {
+            using (UserSettingsEntities context = new UserSettingsEntities())
+            {
+                //Facebook SDK
+                var userId = User.Identity.GetUserId();
+                var access_token = context.EX_UserSettings.FirstOrDefault(u => u.UserId == userId).FacebookToken;
+                var fb = new FacebookClient(access_token);
+                dynamic myInfo = fb.Get("/me?fields=friends{name,picture{url}}");
+                var data = myInfo["friends"].ToString();
+                RootObject response = JsonConvert.DeserializeObject<RootObject>(data);
+                return View(response);
+            }
+        }
 
         [HttpGet]
         public ActionResult Achievements()
@@ -415,7 +431,7 @@ namespace ExerciseApp.Controllers
             {
                 //if statementet er til for at undgå den null-error som kommer hvis databasen returnerer 0, når vi prøver at hente brugerens level
                 int xpSum;
-                if (!levelcontext.EX_UserLevel.Any())
+                if (!levelcontext.EX_UserLevel.Where(u => u.UserId == userId).Any() )
                 {
                     xpSum = 0;
                 }
@@ -473,6 +489,15 @@ namespace ExerciseApp.Controllers
         [HttpGet]
         public ActionResult Categories()
         {   
+            //Henter listen med alle exercises fra databasen, og tilføjer dem til 'exercises' list-elementet fra modellen
+            CategoryEntities context = new CategoryEntities();
+            IEnumerable<EX_ExerciseTable> exercises = new List<EX_ExerciseTable>();
+            exercises = context.EX_ExerciseTable.ToList();
+            return View(exercises);
+        }
+        [HttpGet]
+        public ActionResult ChallengeCategories()
+        {
             //Henter listen med alle exercises fra databasen, og tilføjer dem til 'exercises' list-elementet fra modellen
             CategoryEntities context = new CategoryEntities();
             IEnumerable<EX_ExerciseTable> exercises = new List<EX_ExerciseTable>();
