@@ -400,6 +400,7 @@
       <DependentUpon>ChallengeModel.edmx</DependentUpon>
       <LastGenOutput>ChallengeModel.cs</LastGenOutput>
     </Content>
+    <Content Include="Content\animate.css" />
     <Content Include="Content\bootstrap-theme.css" />
     <Content Include="Content\bootstrap-theme.min.css" />
     <Content Include="Content\bootstrap.css" />
@@ -475,6 +476,7 @@
     <Content Include="Scripts\categories.js" />
     <Content Include="Scripts\challengecategories.js" />
     <Content Include="Scripts\challengefriendlist.js" />
+    <Content Include="Scripts\challengelist.js" />
     <Content Include="Scripts\jasny-bootstrap.min.js" />
     <Content Include="Scripts\jquery-3.2.1.js" />
     <Content Include="Scripts\jquery-3.2.1.min.js" />
@@ -620,6 +622,7 @@
     </Content>
     <Content Include="Views\Manage\ChallengeFriendList.cshtml" />
     <Content Include="Views\Manage\ChallengeCategories.cshtml" />
+    <Content Include="Views\Manage\GetChallenges.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

@@ -38,9 +38,9 @@ namespace ExerciseApp.Controllers
             {
                 return _signInManager ?? HttpContext.GetOwinContext().Get<ApplicationSignInManager>();
             }
-            private set 
-            { 
-                _signInManager = value; 
+            private set
+            {
+                _signInManager = value;
             }
         }
 
@@ -107,9 +107,9 @@ namespace ExerciseApp.Controllers
                             popups.Add(unlockedachievement);
                         }
                     }
-                json = JsonConvert.SerializeObject(popups);
-                return Json(json);
-                }   
+                    json = JsonConvert.SerializeObject(popups);
+                    return Json(json);
+                }
             }
         }
 
@@ -141,7 +141,7 @@ namespace ExerciseApp.Controllers
                                                    && userexercise.UserPopupSeen == false
                                                    select new { userexercise.UserId, userexercise.ExerciseId, userexercise.ExerciseScore, userexercise.ExerciseDate };
                 //Vi opdaterer den bool i databasen som siger om brugeren har modtaget popuppen, så den ikke forefindes mere end en gang
-                
+
                 //Så henter vi det data vi skal bruge fra EX_UserLevel og EX_LevelTable 
                 using (UserLevelXpEntities levelcontext = new UserLevelXpEntities())
                 {
@@ -149,11 +149,11 @@ namespace ExerciseApp.Controllers
                     var popupuserqueryparametres = from userlevel in levelcontext.EX_UserLevel
                                                    where userlevel.UserId == userId
                                                    select userlevel.UserXp;
-                    foreach(var result in popupuserqueryparametres)
+                    foreach (var result in popupuserqueryparametres)
                     {
                         totalUserXp += result;
                     }
-                    
+
                     //Så udregner vi nuværende xp, xp for næste level, nuværende level og næste level som skal vises i popup'en
                     var xpSum = totalUserXp;
                     var next = levelcontext.EX_LevelTable.FirstOrDefault(u => u.TotalLevelXp > xpSum);
@@ -170,30 +170,32 @@ namespace ExerciseApp.Controllers
                             uachievement1.UserSeen = false;
                             userachievements.EX_UserAchievement.Add(uachievement1);
                         }
-                        
-                        if (currentlevel > 5 && !userachievements.EX_UserAchievement.Any(u => u.AchievementId == 2)) {
+
+                        if (currentlevel > 5 && !userachievements.EX_UserAchievement.Any(u => u.AchievementId == 2))
+                        {
                             EX_UserAchievement uachievement2 = new EX_UserAchievement();
                             uachievement2.AchievementId = 2;
                             uachievement2.UserId = userId;
                             uachievement2.UserSeen = false;
                             userachievements.EX_UserAchievement.Add(uachievement2);
                         }
-                        
-                        if (currentlevel > 10 && !userachievements.EX_UserAchievement.Any(u => u.AchievementId == 3)) {
+
+                        if (currentlevel > 10 && !userachievements.EX_UserAchievement.Any(u => u.AchievementId == 3))
+                        {
                             EX_UserAchievement uachievement3 = new EX_UserAchievement();
                             uachievement3.AchievementId = 3;
                             uachievement3.UserId = userId;
                             uachievement3.UserSeen = false;
                             userachievements.EX_UserAchievement.Add(uachievement3);
                         }
-                        
+
 
                         userachievements.SaveChanges();
                     }
-                    
+
                     //Achievements end
                     int totalXpForThisLevel;
-                    
+
                     //if statementet er til for at undgå den null-error som kommer hvis databasen returnerer 0, når vi prøver at hente brugerens level
                     if (!levelcontext.EX_LevelTable.Any(u => u.LevelId == next.LevelId - 1))
                     {
@@ -212,7 +214,8 @@ namespace ExerciseApp.Controllers
                     if (!userexercisecontext.EX_UserExercise.Any(u => u.UserId == userId))
                     {
                         xptowithdraw = 0;
-                    } else
+                    }
+                    else
                     {
                         xptowithdraw = userexercisecontext.EX_UserExercise.OrderByDescending(o => o.ExerciseDate).FirstOrDefault(u => u.UserId == userId).ExerciseScore;
 
@@ -415,7 +418,7 @@ namespace ExerciseApp.Controllers
                 : "";
 
             var userId = User.Identity.GetUserId();
-        var model = new IndexViewModel
+            var model = new IndexViewModel
             {
                 HasPassword = HasPassword(),
                 PhoneNumber = await UserManager.GetPhoneNumberAsync(userId),
@@ -424,14 +427,14 @@ namespace ExerciseApp.Controllers
                 BrowserRemembered = await AuthenticationManager.TwoFactorBrowserRememberedAsync(userId)
             };
 
-            
+
 
             //Her samles de værdier som skal bruges for at vise profilsiden
             using (UserLevelXpEntities levelcontext = new UserLevelXpEntities())
             {
                 //if statementet er til for at undgå den null-error som kommer hvis databasen returnerer 0, når vi prøver at hente brugerens level
                 int xpSum;
-                if (!levelcontext.EX_UserLevel.Where(u => u.UserId == userId).Any() )
+                if (!levelcontext.EX_UserLevel.Where(u => u.UserId == userId).Any())
                 {
                     xpSum = 0;
                 }
@@ -449,11 +452,12 @@ namespace ExerciseApp.Controllers
                 if (!levelcontext.EX_LevelTable.Any(u => u.LevelId == next.LevelId - 1))
                 {
                     totalXpForThisLevel = 0;
-                } else
+                }
+                else
                 {
                     totalXpForThisLevel = levelcontext.EX_LevelTable.FirstOrDefault(u => u.LevelId == next.LevelId - 1).TotalLevelXp;
                 }
-                
+
                 var totalXpForThisLevelEquals = xpSum - totalXpForThisLevel;
                 var totalXpForNextLevel = next.TotalLevelXp - totalXpForThisLevel;
 
@@ -477,7 +481,7 @@ namespace ExerciseApp.Controllers
                 var dt = user.UserBirthday;
                 model.UserBirthday = String.Format("{0:dd/MM/yyyy}", dt);
             };
-            
+
             return View(model);
         }
 
@@ -488,7 +492,7 @@ namespace ExerciseApp.Controllers
 
         [HttpGet]
         public ActionResult Categories()
-        {   
+        {
             //Henter listen med alle exercises fra databasen, og tilføjer dem til 'exercises' list-elementet fra modellen
             CategoryEntities context = new CategoryEntities();
             IEnumerable<EX_ExerciseTable> exercises = new List<EX_ExerciseTable>();
@@ -508,16 +512,16 @@ namespace ExerciseApp.Controllers
         public ActionResult Create(EX_UserExercise newExercise)
         {
             //Her oprettes der en ny entry i databasen med brugerens indtastede information
-                UserExerciseViewModel exercise = new UserExerciseViewModel();
-                var userid = User.Identity.GetUserId();
+            UserExerciseViewModel exercise = new UserExerciseViewModel();
+            var userid = User.Identity.GetUserId();
             //exercisevalue1, 2 og 3 er kg, reps og sets. Disse værdier er sat til at være 1, i tilfælde af at der indtastes en træning med løb eller lign
             //så hvis der er løbet 5km, er regnestykket 5*1*1, hvilket stadig er 5.
-                var exerciseValue = (newExercise.ExerciseValue1 * newExercise.ExerciseValue2 * newExercise.ExerciseValue3);
-                var ExerciseScorestep1 = exerciseValue * newExercise.ExerciseMultiplier;
+            var exerciseValue = (newExercise.ExerciseValue1 * newExercise.ExerciseValue2 * newExercise.ExerciseValue3);
+            var ExerciseScorestep1 = exerciseValue * newExercise.ExerciseMultiplier;
 
             //Outputtet divideres med 100, for at komme udenom en fejl hvor et kommatal ikke kunne sendes til controlleren, og derfor
             //blev ganget med 100 for at give et helt tal
-                var ExerciseScoreResult = ExerciseScorestep1 / 100;
+            var ExerciseScoreResult = ExerciseScorestep1 / 100;
             using (UserInputExerciseEntities context = new UserInputExerciseEntities())
             {
                 EX_UserExercise userExercise = new EX_UserExercise
@@ -551,12 +555,126 @@ namespace ExerciseApp.Controllers
         [HttpGet]
         public ActionResult GetChallenges()
         {
-            //Henter listen med alle challenges fra databasen, og tilføjer dem til 'challenges' list-elementet fra modellen
-            var userid = User.Identity.GetUserId();
-            mmda0915_1055358Entities3 context = new mmda0915_1055358Entities3();
-            IEnumerable<EX_ChallengeTable> challenges = new List<EX_ChallengeTable>();
-            challenges = context.EX_ChallengeTable.Where(u => u.ChallengedId == userid || u.ChallengerId == userid).ToList();
-            return View(challenges);
+            using (mmda0915_1055358Entities3 context = new mmda0915_1055358Entities3())
+            {
+                using (UserSettingsEntities usercontext = new UserSettingsEntities())
+                {
+                    //Henter listen med alle challenges fra databasen, og tilføjer dem til 'challenges' list-elementet fra modellen
+                    var userid = User.Identity.GetUserId();
+
+
+
+                    IEnumerable<EX_ChallengeTable> challenges = new List<EX_ChallengeTable>();
+                    var results = context.EX_ChallengeTable.Where(u => u.ChallengedId == userid || u.ChallengerId == userid);
+                    //challenges = context.EX_ChallengeTable.Where(u => u.ChallengedId == userid || u.ChallengerId == userid).ToList();
+                    List<EX_ChallengeTable> challengeView = new List<EX_ChallengeTable>();
+                    foreach (var item in results)
+                    {
+                        EX_ChallengeTable challengeListInfo = new EX_ChallengeTable();
+                        var challengerFirstname = "";
+                        var challengerLastname = "";
+                        var challengerId = item.ChallengerId;
+                        var challengedId = item.ChallengedId;
+                        if (challengerId == usercontext.EX_UserSettings.FirstOrDefault(u => u.UserId == userid).UserId)
+                        {
+                            challengerFirstname = usercontext.EX_UserSettings.FirstOrDefault(u => u.UserId == item.ChallengedId).UserFirstName;
+                            challengerLastname = usercontext.EX_UserSettings.FirstOrDefault(u => u.UserId == item.ChallengedId).UserLastName;
+                        }
+                        else
+                        {
+                            challengerFirstname = usercontext.EX_UserSettings.FirstOrDefault(u => u.UserId == item.ChallengerId).UserFirstName;
+                            challengerLastname = usercontext.EX_UserSettings.FirstOrDefault(u => u.UserId == item.ChallengerId).UserLastName;
+                        }
+                        var challengerFullname = challengerFirstname + " " + challengerLastname;
+                        challengeListInfo.ChallengerName = challengerFullname;
+                        using (CategoryEntities exercisecontext = new CategoryEntities())
+                        {
+                            var exerciseName = exercisecontext.EX_ExerciseTable.FirstOrDefault(u => u.ExerciseId == item.ExerciseId).ExerciseName;
+                            challengeListInfo.exerciseName = exerciseName;
+                        }
+                        if (item.ChallengedId == userid && item.ChallengedAccepted == false)
+                        {
+                            challengeListInfo.Areyouchallenged = 1;
+                        }
+                        else
+                        {
+                            challengeListInfo.Areyouchallenged = 0;
+                        }
+                        challengeListInfo.ChallengeId = item.ChallengeId;
+                        challengeListInfo.ChallengeGoal = item.ChallengeGoal;
+                        challengeListInfo.ChallengeStart = item.ChallengeStart;
+                        challengeListInfo.ChallengeEnd = item.ChallengeEnd;
+                        challengeListInfo.ChallengeTitle = item.ChallengeTitle;
+                        challengeView.Add(challengeListInfo);
+                    }
+                    return View(challengeView);
+
+                }
+            }
+
+        }
+        [HttpPost]
+        public JsonResult GetChallengeDetails(int id)
+        {
+            string json = "";
+
+            using (mmda0915_1055358Entities3 context = new mmda0915_1055358Entities3())
+            {
+                using (UserSettingsEntities usercontext = new UserSettingsEntities())
+                {
+                    using (CategoryEntities exercisecontext = new CategoryEntities())
+                    {
+                        var result = context.EX_ChallengeTable.Where(u => u.ChallengeId == id);
+
+                        List<GetChallengeDetails> challengeDetails = new List<GetChallengeDetails>();
+                        foreach (var item in result)
+                        {
+                            GetChallengeDetails challengedetails = new GetChallengeDetails();
+                            //Først skal vi have fat i challengerens navn
+                            challengedetails.ChallengerName = usercontext.EX_UserSettings.FirstOrDefault(u => u.UserId == item.ChallengerId).UserFirstName;
+                            challengedetails.ChallengedName = usercontext.EX_UserSettings.FirstOrDefault(u => u.UserId == item.ChallengedId).UserFirstName;
+                            challengedetails.ExerciseName = exercisecontext.EX_ExerciseTable.FirstOrDefault(u => u.ExerciseId == item.ExerciseId).ExerciseName;
+                            challengedetails.ChallengeTitle = item.ChallengeTitle;
+                            challengedetails.ChallengeGoal = item.ChallengeGoal;
+                            challengedetails.ChallengeScore = item.ChallengeScore;
+                            challengedetails.ChallengeStart = item.ChallengeStart;
+                            challengedetails.ChallengeEnd = item.ChallengeEnd;
+
+                            challengeDetails.Add(challengedetails);
+
+                        }
+                        return Json(challengeDetails);
+                    }
+                }
+            }
+        }
+        [HttpPost]
+        public JsonResult AcceptChallenge(int id)
+        {
+            string json = "";
+
+            using (mmda0915_1055358Entities3 context = new mmda0915_1055358Entities3())
+            {
+                var result = context.EX_ChallengeTable.FirstOrDefault(u => u.ChallengeId == id);
+                result.ChallengedAccepted = true;
+                context.Entry(result).State = EntityState.Modified;
+                context.SaveChanges();
+            }
+
+            return Json(json);
+        }
+        [HttpPost]
+        public JsonResult DeleteChallenge(int id)
+        {
+            string json = "";
+
+            using (mmda0915_1055358Entities3 context = new mmda0915_1055358Entities3())
+            {
+                var result = context.EX_ChallengeTable.FirstOrDefault(u => u.ChallengeId == id);
+                context.EX_ChallengeTable.Remove(result);
+                context.SaveChanges();
+            }
+            return Json(json);
         }
 
 
@@ -568,29 +686,29 @@ namespace ExerciseApp.Controllers
                 using (UserSettingsEntities usercontext = new UserSettingsEntities())
                 {
                     var challengedId = usercontext.EX_UserSettings.FirstOrDefault(u => u.FacebookId == newChallenge.ChallengedId).UserId;
-                
-                
 
-                
 
-                EX_ChallengeTable challengetable = new EX_ChallengeTable()
-                {
-                    ChallengerId = User.Identity.GetUserId(),
-                    ChallengedId = challengedId,
-                    ChallengedAccepted = false,
-                    ExerciseId = newChallenge.ExerciseId,
-                    ChallengeScore = 150,
-                    ChallengeTitle = newChallenge.ChallengeTitle,
-                    ChallengeGoal = newChallenge.ChallengeGoal,
-                    ChallengeStart = newChallenge.ChallengeStart,
-                    ChallengeEnd = newChallenge.ChallengeEnd,
-                };
 
-                context.EX_ChallengeTable.Add(challengetable);
-                context.SaveChanges();
-                
-            
-                return RedirectToAction("Index", "Manage");
+
+
+                    EX_ChallengeTable challengetable = new EX_ChallengeTable()
+                    {
+                        ChallengerId = User.Identity.GetUserId(),
+                        ChallengedId = challengedId,
+                        ChallengedAccepted = false,
+                        ExerciseId = newChallenge.ExerciseId,
+                        ChallengeScore = 150,
+                        ChallengeTitle = newChallenge.ChallengeTitle.ToUpper(),
+                        ChallengeGoal = newChallenge.ChallengeGoal,
+                        ChallengeStart = newChallenge.ChallengeStart,
+                        ChallengeEnd = newChallenge.ChallengeEnd,
+                    };
+
+                    context.EX_ChallengeTable.Add(challengetable);
+                    context.SaveChanges();
+
+
+                    return RedirectToAction("Index", "Manage");
                 }
             }
         }
@@ -853,7 +971,7 @@ namespace ExerciseApp.Controllers
             base.Dispose(disposing);
         }
 
-#region Helpers
+        #region Helpers
         // Used for XSRF protection when adding external logins
         private const string XsrfKey = "XsrfId";
 
@@ -904,6 +1022,6 @@ namespace ExerciseApp.Controllers
             Error
         }
 
-#endregion
+        #endregion
     }
 }

@@ -173,7 +173,10 @@ textarea {
     height: 75px;
     width: 75px;
 }
-
+/*ChallengeList*/
+.acc-btn > a {
+    float:right;
+}
 /*Level up animation, lånt fra https://codepen.io/sp725/pen/ZYBELO*/
 #container1 {
     z-index: 2;

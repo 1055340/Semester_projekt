@@ -66,7 +66,25 @@ namespace ExerciseApp.Models
         public int ChallengeScore { get; set; }
         public string ChallengeTitle { get; set; }
     }
-    public class GetChallenges
+    public class GetChallengeDetails
+    {
+        public int ChallengeId { get; set; }
+        public string ChallengerId { get; set; }
+        public string ChallengedId { get; set; }
+        public int ChallengerValue { get; set; }
+        public int ChallengedValue { get; set; }
+        public int ExerciseId { get; set; }
+        public int ChallengeGoal { get; set; }
+        public System.DateTime ChallengeStart { get; set; }
+        public System.DateTime ChallengeEnd { get; set; }
+        public int ChallengeScore { get; set; }
+        public string ChallengeTitle { get; set; }
+        public string ChallengerName { get; set; }
+        public string ChallengedName { get; set; }
+        public string ExerciseName { get; set; }
+        public virtual IEnumerable<GetChallengeDetails> challengeDetails { get; set; }
+    }
+    public class GetChallenges : DbContext
     {
         public int ChallengeId { get; set; }
         public string ChallengerId { get; set; }
@@ -81,6 +99,10 @@ namespace ExerciseApp.Models
         public int ChallengeScore { get; set; }
         public string ChallengeTitle { get; set; }
         public virtual IEnumerable<EX_ChallengeTable> Challenges { get; set; }
+        public string ChallengerName { get; set; }
+        public string ExerciseName { get; set; }
+        public int Areyouchallenged { get; set; }
+        public virtual IEnumerable<GetChallenges> ReadableChallenges { get; set; }
     }
 
     public class UserExerciseViewModel : DbContext
