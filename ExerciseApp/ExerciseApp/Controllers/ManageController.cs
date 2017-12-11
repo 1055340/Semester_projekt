@@ -64,7 +64,7 @@ namespace ExerciseApp.Controllers
                 var userId = User.Identity.GetUserId();
                 var access_token = context.EX_UserSettings.FirstOrDefault(u => u.UserId == userId).FacebookToken;
                 var fb = new FacebookClient(access_token);
-                dynamic myInfo = fb.Get("/me?fields=friends{name,picture{url}}");
+                dynamic myInfo = fb.Get("/me?fields=friends{id,name,picture{url}}");
                 var data = myInfo["friends"].ToString();
                 RootObject response = JsonConvert.DeserializeObject<RootObject>(data);
                 return View(response);
@@ -508,7 +508,7 @@ namespace ExerciseApp.Controllers
         public ActionResult Create(EX_UserExercise newExercise)
         {
             //Her oprettes der en ny entry i databasen med brugerens indtastede information
-                UserExerciseViewModeltest exercise = new UserExerciseViewModeltest();
+                UserExerciseViewModel exercise = new UserExerciseViewModel();
                 var userid = User.Identity.GetUserId();
             //exercisevalue1, 2 og 3 er kg, reps og sets. Disse værdier er sat til at være 1, i tilfælde af at der indtastes en træning med løb eller lign
             //så hvis der er løbet 5km, er regnestykket 5*1*1, hvilket stadig er 5.
@@ -547,6 +547,53 @@ namespace ExerciseApp.Controllers
             return RedirectToAction("Index", "Manage");
         }
 
+
+        [HttpGet]
+        public ActionResult GetChallenges()
+        {
+            //Henter listen med alle challenges fra databasen, og tilføjer dem til 'challenges' list-elementet fra modellen
+            var userid = User.Identity.GetUserId();
+            mmda0915_1055358Entities3 context = new mmda0915_1055358Entities3();
+            IEnumerable<EX_ChallengeTable> challenges = new List<EX_ChallengeTable>();
+            challenges = context.EX_ChallengeTable.Where(u => u.ChallengedId == userid || u.ChallengerId == userid).ToList();
+            return View(challenges);
+        }
+
+
+        [HttpPost]
+        public ActionResult CreateChallenge(EX_ChallengeTable newChallenge)
+        {
+            using (mmda0915_1055358Entities3 context = new mmda0915_1055358Entities3())
+            {
+                using (UserSettingsEntities usercontext = new UserSettingsEntities())
+                {
+                    var challengedId = usercontext.EX_UserSettings.FirstOrDefault(u => u.FacebookId == newChallenge.ChallengedId).UserId;
+                
+                
+
+                
+
+                EX_ChallengeTable challengetable = new EX_ChallengeTable()
+                {
+                    ChallengerId = User.Identity.GetUserId(),
+                    ChallengedId = challengedId,
+                    ChallengedAccepted = false,
+                    ExerciseId = newChallenge.ExerciseId,
+                    ChallengeScore = 150,
+                    ChallengeTitle = newChallenge.ChallengeTitle,
+                    ChallengeGoal = newChallenge.ChallengeGoal,
+                    ChallengeStart = newChallenge.ChallengeStart,
+                    ChallengeEnd = newChallenge.ChallengeEnd,
+                };
+
+                context.EX_ChallengeTable.Add(challengetable);
+                context.SaveChanges();
+                
+            
+                return RedirectToAction("Index", "Manage");
+                }
+            }
+        }
 
 
         //
@@ -604,7 +651,6 @@ namespace ExerciseApp.Controllers
             return RedirectToAction("VerifyPhoneNumber", new { PhoneNumber = model.Number });
         }
 
-        //
         // POST: /Manage/EnableTwoFactorAuthentication
         [HttpPost]
         [ValidateAntiForgeryToken]

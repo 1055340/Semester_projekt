@@ -240,11 +240,29 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>CategoryModel.edmx</DependentUpon>
     </Compile>
+    <Compile Include="ChallengeModel.Context.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>ChallengeModel.Context.tt</DependentUpon>
+    </Compile>
+    <Compile Include="ChallengeModel.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>ChallengeModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="ChallengeModel.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>ChallengeModel.edmx</DependentUpon>
+    </Compile>
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
     <Compile Include="EX_AchievementTable.cs">
       <DependentUpon>AchievementsModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EX_ChallengeTable.cs">
+      <DependentUpon>ChallengeModel.tt</DependentUpon>
     </Compile>
     <Compile Include="EX_ExerciseTable.cs">
       <DependentUpon>CategoryModel.tt</DependentUpon>
@@ -372,6 +390,16 @@
       <DependentUpon>CategoryModel.edmx</DependentUpon>
       <LastGenOutput>CategoryModel.cs</LastGenOutput>
     </Content>
+    <Content Include="ChallengeModel.Context.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>ChallengeModel.edmx</DependentUpon>
+      <LastGenOutput>ChallengeModel.Context.cs</LastGenOutput>
+    </Content>
+    <Content Include="ChallengeModel.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>ChallengeModel.edmx</DependentUpon>
+      <LastGenOutput>ChallengeModel.cs</LastGenOutput>
+    </Content>
     <Content Include="Content\bootstrap-theme.css" />
     <Content Include="Content\bootstrap-theme.min.css" />
     <Content Include="Content\bootstrap.css" />
@@ -433,12 +461,20 @@
     <Content Include="AchievementsModel.edmx.diagram">
       <DependentUpon>AchievementsModel.edmx</DependentUpon>
     </Content>
+    <EntityDeploy Include="ChallengeModel.edmx">
+      <Generator>EntityModelCodeGenerator</Generator>
+      <LastGenOutput>ChallengeModel.Designer.cs</LastGenOutput>
+    </EntityDeploy>
+    <Content Include="ChallengeModel.edmx.diagram">
+      <DependentUpon>ChallengeModel.edmx</DependentUpon>
+    </Content>
     <None Include="Properties\PublishProfiles\CustomProfile.pubxml" />
     <None Include="Properties\PublishProfiles\CustomProfile1.pubxml" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
     <None Include="Scripts\jquery-3.2.1.intellisense.js" />
     <Content Include="Scripts\categories.js" />
     <Content Include="Scripts\challengecategories.js" />
+    <Content Include="Scripts\challengefriendlist.js" />
     <Content Include="Scripts\jasny-bootstrap.min.js" />
     <Content Include="Scripts\jquery-3.2.1.js" />
     <Content Include="Scripts\jquery-3.2.1.min.js" />

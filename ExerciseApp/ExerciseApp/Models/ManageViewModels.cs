@@ -51,7 +51,39 @@ namespace ExerciseApp.Models
         public double ExerciseMultiplier { get; set; }
         public virtual IEnumerable<EX_ExerciseTable> Exercises { get; set; }
     }
-    public class UserExerciseViewModeltest : DbContext
+    public class ChallengeViewModel : DbContext
+    {
+        public int ChallengeId { get; set; }
+        public string ChallengerId { get; set; }
+        public string ChallengedId { get; set; }
+        public bool ChallengedAccepted { get; set; }
+        public int ChallengerValue { get; set; }
+        public int ChallengedValue { get; set; }
+        public int ExerciseId { get; set; }
+        public int ChallengeGoal { get; set; }
+        public System.DateTime ChallengeStart { get; set; }
+        public System.DateTime ChallengeEnd { get; set; }
+        public int ChallengeScore { get; set; }
+        public string ChallengeTitle { get; set; }
+    }
+    public class GetChallenges
+    {
+        public int ChallengeId { get; set; }
+        public string ChallengerId { get; set; }
+        public string ChallengedId { get; set; }
+        public bool ChallengedAccepted { get; set; }
+        public int ChallengerValue { get; set; }
+        public int ChallengedValue { get; set; }
+        public int ExerciseId { get; set; }
+        public int ChallengeGoal { get; set; }
+        public System.DateTime ChallengeStart { get; set; }
+        public System.DateTime ChallengeEnd { get; set; }
+        public int ChallengeScore { get; set; }
+        public string ChallengeTitle { get; set; }
+        public virtual IEnumerable<EX_ChallengeTable> Challenges { get; set; }
+    }
+
+    public class UserExerciseViewModel : DbContext
     {
         public string UserId { get; set; }
         public int ExerciseId { get; set; }
