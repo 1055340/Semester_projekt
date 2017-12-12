@@ -431,6 +431,7 @@
     <Content Include="images\cat-7.png" />
     <Content Include="images\cat-8.png" />
     <Content Include="images\cat-9.png" />
+    <Content Include="images\challenge-goal.png" />
     <Content Include="image\blank.gif" />
     <Content Include="image\particles.gif" />
     <Content Include="Scripts\achievements.js" />
@@ -483,6 +484,7 @@
     <Content Include="Scripts\jquery-3.2.1.slim.js" />
     <Content Include="Scripts\jquery-3.2.1.slim.min.js" />
     <None Include="Scripts\jquery.validate-vsdoc.js" />
+    <Content Include="Scripts\jquery.countdown.min.js" />
     <Content Include="Scripts\jquery.validate.js" />
     <Content Include="Scripts\jquery.validate.min.js" />
     <Content Include="Scripts\jquery.validate.unobtrusive.js" />

@@ -624,26 +624,43 @@ namespace ExerciseApp.Controllers
                 {
                     using (CategoryEntities exercisecontext = new CategoryEntities())
                     {
-                        var result = context.EX_ChallengeTable.Where(u => u.ChallengeId == id);
-
-                        List<GetChallengeDetails> challengeDetails = new List<GetChallengeDetails>();
-                        foreach (var item in result)
+                        using (UserInputExerciseEntities inputcontext = new UserInputExerciseEntities())
                         {
-                            GetChallengeDetails challengedetails = new GetChallengeDetails();
-                            //Først skal vi have fat i challengerens navn
-                            challengedetails.ChallengerName = usercontext.EX_UserSettings.FirstOrDefault(u => u.UserId == item.ChallengerId).UserFirstName;
-                            challengedetails.ChallengedName = usercontext.EX_UserSettings.FirstOrDefault(u => u.UserId == item.ChallengedId).UserFirstName;
-                            challengedetails.ExerciseName = exercisecontext.EX_ExerciseTable.FirstOrDefault(u => u.ExerciseId == item.ExerciseId).ExerciseName;
-                            challengedetails.ChallengeTitle = item.ChallengeTitle;
-                            challengedetails.ChallengeGoal = item.ChallengeGoal;
-                            challengedetails.ChallengeScore = item.ChallengeScore;
-                            challengedetails.ChallengeStart = item.ChallengeStart;
-                            challengedetails.ChallengeEnd = item.ChallengeEnd;
+                            var result = context.EX_ChallengeTable.Where(u => u.ChallengeId == id);
 
-                            challengeDetails.Add(challengedetails);
+                            List<GetChallengeDetails> challengeDetails = new List<GetChallengeDetails>();
+                            foreach (var item in result)
+                            {
+                                GetChallengeDetails challengedetails = new GetChallengeDetails();
+                                //Først skal vi have fat i challengerens navn
+                                challengedetails.ChallengerName = usercontext.EX_UserSettings.FirstOrDefault(u => u.UserId == item.ChallengerId).UserFirstName;
+                                challengedetails.ChallengedName = usercontext.EX_UserSettings.FirstOrDefault(u => u.UserId == item.ChallengedId).UserFirstName;
+                                challengedetails.ExerciseName = exercisecontext.EX_ExerciseTable.FirstOrDefault(u => u.ExerciseId == item.ExerciseId).ExerciseName;
+                                var challengerinputs = inputcontext.EX_UserExercise.Where(u => u.UserId == item.ChallengerId && u.ExerciseId == item.ExerciseId && u.ExerciseDate >= item.ChallengeStart && u.ExerciseDate <= item.ChallengeEnd).ToList();
+                                var challengerinputtotal = 0;
+                                foreach (var challengerinput in challengerinputs)
+                                {
+                                    challengerinputtotal += challengerinput.ExerciseValue;
+                                };
+                                challengedetails.ChallengerValue = challengerinputtotal;
+                                var challengedinputs = inputcontext.EX_UserExercise.Where(u => u.UserId == item.ChallengedId && u.ExerciseId == item.ExerciseId && u.ExerciseDate >= item.ChallengeStart && u.ExerciseDate <= item.ChallengeEnd).ToList();
+                                var challengedinputtotal = 0;
+                                foreach (var challengedinput in challengedinputs)
+                                {
+                                    challengedinputtotal += challengedinput.ExerciseValue;
+                                };
+                                challengedetails.ChallengedValue = challengedinputtotal;
+                                challengedetails.ChallengeTitle = item.ChallengeTitle;
+                                challengedetails.ChallengeGoal = item.ChallengeGoal;
+                                challengedetails.ChallengeScore = item.ChallengeScore;
+                                challengedetails.ChallengeStart = item.ChallengeStart;
+                                challengedetails.ChallengeEnd = item.ChallengeEnd;
 
+                                challengeDetails.Add(challengedetails);
+
+                            }
+                            return Json(challengeDetails);
                         }
-                        return Json(challengeDetails);
                     }
                 }
             }
@@ -657,6 +674,7 @@ namespace ExerciseApp.Controllers
             {
                 var result = context.EX_ChallengeTable.FirstOrDefault(u => u.ChallengeId == id);
                 result.ChallengedAccepted = true;
+                result.ChallengeStart = DateTime.Now;
                 context.Entry(result).State = EntityState.Modified;
                 context.SaveChanges();
             }
@@ -700,7 +718,7 @@ namespace ExerciseApp.Controllers
                         ChallengeScore = 150,
                         ChallengeTitle = newChallenge.ChallengeTitle.ToUpper(),
                         ChallengeGoal = newChallenge.ChallengeGoal,
-                        ChallengeStart = newChallenge.ChallengeStart,
+                        ChallengeStart = DateTime.Now,
                         ChallengeEnd = newChallenge.ChallengeEnd,
                     };
 
