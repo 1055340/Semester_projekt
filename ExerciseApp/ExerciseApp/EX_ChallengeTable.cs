@@ -18,14 +18,14 @@ namespace ExerciseApp
         public string ChallengerId { get; set; }
         public string ChallengedId { get; set; }
         public Nullable<bool> ChallengedAccepted { get; set; }
-        public Nullable<int> ChallengerValue { get; set; }
-        public Nullable<int> ChallengedValue { get; set; }
         public int ExerciseId { get; set; }
         public int ChallengeGoal { get; set; }
         public System.DateTime ChallengeStart { get; set; }
         public System.DateTime ChallengeEnd { get; set; }
         public int ChallengeScore { get; set; }
         public string ChallengeTitle { get; set; }
+        public bool ChallengeEnded { get; set; }
+        public string ChallengeWinner { get; set; }
         public string ChallengerName { get; set; }
         public string exerciseName { get; set; }
         public int Areyouchallenged { get; set; }

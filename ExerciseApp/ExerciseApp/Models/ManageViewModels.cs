@@ -82,6 +82,8 @@ namespace ExerciseApp.Models
         public string ChallengerName { get; set; }
         public string ChallengedName { get; set; }
         public string ExerciseName { get; set; }
+        public bool ChallengeEnded { get; set; }
+        public string ChallengeWinner { get; set; }
         public virtual IEnumerable<GetChallengeDetails> challengeDetails { get; set; }
     }
     public class GetChallenges : DbContext
@@ -102,6 +104,8 @@ namespace ExerciseApp.Models
         public string ChallengerName { get; set; }
         public string ExerciseName { get; set; }
         public int Areyouchallenged { get; set; }
+        public bool ChallengeEnded { get; set; }
+        public string ChallengeWinner { get; set; }
         public virtual IEnumerable<GetChallenges> ReadableChallenges { get; set; }
     }
 

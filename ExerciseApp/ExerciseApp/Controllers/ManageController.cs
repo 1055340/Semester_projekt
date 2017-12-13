@@ -107,6 +107,13 @@ namespace ExerciseApp.Controllers
                             popups.Add(unlockedachievement);
                         }
                     }
+                    //Værdien i databasen for om brugeren har set popup'en ændres, så den ikke vises mere end en gang
+                    foreach (var unseenpopups in userachievementcontext.EX_UserAchievement.Where(x => x.UserId == userId))
+                    {
+                        unseenpopups.UserSeen = true;
+                    }
+                    userachievementcontext.SaveChanges();
+
                     json = JsonConvert.SerializeObject(popups);
                     return Json(json);
                 }
@@ -485,10 +492,7 @@ namespace ExerciseApp.Controllers
             return View(model);
         }
 
-        //private static void NewMethod(IndexViewModel model, IEnumerable<EX_UserLevel> totalUserXp)
-        //{
-        //    model.UserTotalXp = totalUserXp;
-        //}
+        
 
         [HttpGet]
         public ActionResult Categories()
@@ -555,7 +559,7 @@ namespace ExerciseApp.Controllers
         [HttpGet]
         public ActionResult GetChallenges()
         {
-            using (mmda0915_1055358Entities3 context = new mmda0915_1055358Entities3())
+            using (mmda0915_1055358Entities4 context = new mmda0915_1055358Entities4())
             {
                 using (UserSettingsEntities usercontext = new UserSettingsEntities())
                 {
@@ -618,7 +622,7 @@ namespace ExerciseApp.Controllers
         {
             string json = "";
 
-            using (mmda0915_1055358Entities3 context = new mmda0915_1055358Entities3())
+            using (mmda0915_1055358Entities4 context = new mmda0915_1055358Entities4())
             {
                 using (UserSettingsEntities usercontext = new UserSettingsEntities())
                 {
@@ -632,6 +636,9 @@ namespace ExerciseApp.Controllers
                             foreach (var item in result)
                             {
                                 GetChallengeDetails challengedetails = new GetChallengeDetails();
+                                challengedetails.ChallengeId = item.ChallengeId;
+                                challengedetails.ChallengerId = usercontext.EX_UserSettings.FirstOrDefault(u => u.UserId == item.ChallengerId).FacebookId;
+                                challengedetails.ChallengedId = usercontext.EX_UserSettings.FirstOrDefault(u => u.UserId == item.ChallengedId).FacebookId; ;
                                 //Først skal vi have fat i challengerens navn
                                 challengedetails.ChallengerName = usercontext.EX_UserSettings.FirstOrDefault(u => u.UserId == item.ChallengerId).UserFirstName;
                                 challengedetails.ChallengedName = usercontext.EX_UserSettings.FirstOrDefault(u => u.UserId == item.ChallengedId).UserFirstName;
@@ -670,7 +677,7 @@ namespace ExerciseApp.Controllers
         {
             string json = "";
 
-            using (mmda0915_1055358Entities3 context = new mmda0915_1055358Entities3())
+            using (mmda0915_1055358Entities4 context = new mmda0915_1055358Entities4())
             {
                 var result = context.EX_ChallengeTable.FirstOrDefault(u => u.ChallengeId == id);
                 result.ChallengedAccepted = true;
@@ -686,7 +693,7 @@ namespace ExerciseApp.Controllers
         {
             string json = "";
 
-            using (mmda0915_1055358Entities3 context = new mmda0915_1055358Entities3())
+            using (mmda0915_1055358Entities4 context = new mmda0915_1055358Entities4())
             {
                 var result = context.EX_ChallengeTable.FirstOrDefault(u => u.ChallengeId == id);
                 context.EX_ChallengeTable.Remove(result);
@@ -699,7 +706,7 @@ namespace ExerciseApp.Controllers
         [HttpPost]
         public ActionResult CreateChallenge(EX_ChallengeTable newChallenge)
         {
-            using (mmda0915_1055358Entities3 context = new mmda0915_1055358Entities3())
+            using (mmda0915_1055358Entities4 context = new mmda0915_1055358Entities4())
             {
                 using (UserSettingsEntities usercontext = new UserSettingsEntities())
                 {
@@ -714,6 +721,7 @@ namespace ExerciseApp.Controllers
                         ChallengerId = User.Identity.GetUserId(),
                         ChallengedId = challengedId,
                         ChallengedAccepted = false,
+                        ChallengeEnded = false,
                         ExerciseId = newChallenge.ExerciseId,
                         ChallengeScore = 150,
                         ChallengeTitle = newChallenge.ChallengeTitle.ToUpper(),

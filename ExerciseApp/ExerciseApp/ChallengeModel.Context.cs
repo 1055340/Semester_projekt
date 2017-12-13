@@ -13,10 +13,10 @@ namespace ExerciseApp
     using System.Data.Entity;
     using System.Data.Entity.Infrastructure;
     
-    public partial class mmda0915_1055358Entities3 : DbContext
+    public partial class mmda0915_1055358Entities4 : DbContext
     {
-        public mmda0915_1055358Entities3()
-            : base("name=mmda0915_1055358Entities3")
+        public mmda0915_1055358Entities4()
+            : base("name=mmda0915_1055358Entities4")
         {
         }
     
