@@ -28,6 +28,7 @@ namespace ExerciseApp
         public string ChallengeWinner { get; set; }
         public string ChallengerName { get; set; }
         public string exerciseName { get; set; }
+        public int ThisUserWon { get; set; }
         public int Areyouchallenged { get; set; }
     }
 }

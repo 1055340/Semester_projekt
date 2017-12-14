@@ -169,7 +169,7 @@ namespace ExerciseApp.Controllers
                     using (UserAchievementEntities userachievements = new UserAchievementEntities())
                     {
                         var currentlevel = next.LevelId;
-                        if (currentlevel > 1 && !userachievements.EX_UserAchievement.Any(u => u.AchievementId == 1))
+                        if (currentlevel > 1 && !userachievements.EX_UserAchievement.Any(u => u.AchievementId == 1 && u.UserId == userId))
                         {
                             EX_UserAchievement uachievement1 = new EX_UserAchievement();
                             uachievement1.AchievementId = 1;
@@ -178,7 +178,7 @@ namespace ExerciseApp.Controllers
                             userachievements.EX_UserAchievement.Add(uachievement1);
                         }
 
-                        if (currentlevel > 5 && !userachievements.EX_UserAchievement.Any(u => u.AchievementId == 2))
+                        if (currentlevel > 5 && !userachievements.EX_UserAchievement.Any(u => u.AchievementId == 2 && u.UserId == userId))
                         {
                             EX_UserAchievement uachievement2 = new EX_UserAchievement();
                             uachievement2.AchievementId = 2;
@@ -187,7 +187,7 @@ namespace ExerciseApp.Controllers
                             userachievements.EX_UserAchievement.Add(uachievement2);
                         }
 
-                        if (currentlevel > 10 && !userachievements.EX_UserAchievement.Any(u => u.AchievementId == 3))
+                        if (currentlevel > 10 && !userachievements.EX_UserAchievement.Any(u => u.AchievementId == 3 && u.UserId == userId))
                         {
                             EX_UserAchievement uachievement3 = new EX_UserAchievement();
                             uachievement3.AchievementId = 3;
@@ -251,7 +251,7 @@ namespace ExerciseApp.Controllers
                     using (UserAchievementEntities userachievements = new UserAchievementEntities())
                     {
                         //Tjekker for achievement 6
-                        var alreadyHasAchievement6 = userachievements.EX_UserAchievement.Any(u => u.AchievementId == 6);
+                        var alreadyHasAchievement6 = userachievements.EX_UserAchievement.Any(u => u.AchievementId == 6 && u.UserId == userId);
                         if (alreadyHasAchievement6 == false)
                         {
                             var Achievement6 = userexercisecontext.EX_UserExercise.Where(u => u.ExerciseId == 8);
@@ -270,7 +270,7 @@ namespace ExerciseApp.Controllers
                             }
                         }
                         //Tjekker for achievement 7
-                        var alreadyHasAchievement7 = userachievements.EX_UserAchievement.Any(u => u.AchievementId == 7);
+                        var alreadyHasAchievement7 = userachievements.EX_UserAchievement.Any(u => u.AchievementId == 7 && u.UserId == userId);
                         if (alreadyHasAchievement7 == false)
                         {
                             var Achievement7 = userexercisecontext.EX_UserExercise.Where(u => u.ExerciseId == 6);
@@ -289,7 +289,7 @@ namespace ExerciseApp.Controllers
                             }
                         }
                         //Tjekker for achievement 8
-                        var alreadyHasAchievement8 = userachievements.EX_UserAchievement.Any(u => u.AchievementId == 8);
+                        var alreadyHasAchievement8 = userachievements.EX_UserAchievement.Any(u => u.AchievementId == 8 && u.UserId == userId);
                         if (alreadyHasAchievement8 == false)
                         {
                             var Achievement8 = userexercisecontext.EX_UserExercise.Where(u => u.ExerciseId == 3);
@@ -308,7 +308,7 @@ namespace ExerciseApp.Controllers
                             }
                         }
                         //Tjekker for achievement 9
-                        var alreadyHasAchievement9 = userachievements.EX_UserAchievement.Any(u => u.AchievementId == 9);
+                        var alreadyHasAchievement9 = userachievements.EX_UserAchievement.Any(u => u.AchievementId == 9 && u.UserId == userId);
                         if (alreadyHasAchievement9 == false)
                         {
                             var Achievement9 = userexercisecontext.EX_UserExercise.Where(u => u.ExerciseId == 9);
@@ -327,7 +327,7 @@ namespace ExerciseApp.Controllers
                             }
                         }
                         //Tjekker for achievement 11 (triathlon) (achievement 10 er: vind en challenge og tjekkes et andet sted)
-                        var alreadyHasAchievement11 = userachievements.EX_UserAchievement.Any(u => u.AchievementId == 11);
+                        var alreadyHasAchievement11 = userachievements.EX_UserAchievement.Any(u => u.AchievementId == 11 && u.UserId == userId);
                         if (alreadyHasAchievement11 == false)
                         {
                             var Achievement11swim = userexercisecontext.EX_UserExercise.Where(u => u.ExerciseId == 10);
@@ -604,6 +604,16 @@ namespace ExerciseApp.Controllers
                         {
                             challengeListInfo.Areyouchallenged = 0;
                         }
+                        var hest = item.ChallengeWinner;
+                        var tes = usercontext.EX_UserSettings.FirstOrDefault(u => u.UserId == userid).FacebookId;
+                        string vest = usercontext.EX_UserSettings.FirstOrDefault(u => u.UserId == userid).FacebookId;
+                        if (item.ChallengeWinner == usercontext.EX_UserSettings.FirstOrDefault(u => u.UserId == userid).FacebookId)
+                        {
+                            challengeListInfo.ThisUserWon = 1;
+                        } else
+                        {
+                            challengeListInfo.ThisUserWon = 0;
+                        }
                         challengeListInfo.ChallengeId = item.ChallengeId;
                         challengeListInfo.ChallengeGoal = item.ChallengeGoal;
                         challengeListInfo.ChallengeStart = item.ChallengeStart;
@@ -636,9 +646,10 @@ namespace ExerciseApp.Controllers
                             foreach (var item in result)
                             {
                                 GetChallengeDetails challengedetails = new GetChallengeDetails();
+                                challengedetails.ThisUser = User.Identity.GetUserId();
                                 challengedetails.ChallengeId = item.ChallengeId;
                                 challengedetails.ChallengerId = usercontext.EX_UserSettings.FirstOrDefault(u => u.UserId == item.ChallengerId).FacebookId;
-                                challengedetails.ChallengedId = usercontext.EX_UserSettings.FirstOrDefault(u => u.UserId == item.ChallengedId).FacebookId; ;
+                                challengedetails.ChallengedId = usercontext.EX_UserSettings.FirstOrDefault(u => u.UserId == item.ChallengedId).FacebookId;
                                 //Først skal vi have fat i challengerens navn
                                 challengedetails.ChallengerName = usercontext.EX_UserSettings.FirstOrDefault(u => u.UserId == item.ChallengerId).UserFirstName;
                                 challengedetails.ChallengedName = usercontext.EX_UserSettings.FirstOrDefault(u => u.UserId == item.ChallengedId).UserFirstName;
@@ -661,6 +672,7 @@ namespace ExerciseApp.Controllers
                                 challengedetails.ChallengeGoal = item.ChallengeGoal;
                                 challengedetails.ChallengeScore = item.ChallengeScore;
                                 challengedetails.ChallengeStart = item.ChallengeStart;
+                                challengedetails.ChallengeEnded = item.ChallengeEnded;
                                 challengedetails.ChallengeEnd = item.ChallengeEnd;
 
                                 challengeDetails.Add(challengedetails);
@@ -739,6 +751,43 @@ namespace ExerciseApp.Controllers
             }
         }
 
+        [HttpPost]
+        public JsonResult FinishChallenge(string winner, int id)
+        {
+            string json = "";
+            using (UserSettingsEntities usercontext = new UserSettingsEntities())
+            {
+                var winnerName = usercontext.EX_UserSettings.FirstOrDefault(u => u.FacebookId == winner).UserFirstName;
+                json = winnerName;
+            }
+            
+            var userId = User.Identity.GetUserId();
+
+            using (mmda0915_1055358Entities4 context = new mmda0915_1055358Entities4())
+            {
+                var result = context.EX_ChallengeTable.FirstOrDefault(u => u.ChallengeId == id);
+                result.ChallengeWinner = winner;
+                result.ChallengeEnded = true;
+                context.Entry(result).State = EntityState.Modified;
+                context.SaveChanges();
+            }
+            using (UserAchievementEntities achievementcontext = new UserAchievementEntities())
+            {
+                if (!achievementcontext.EX_UserAchievement.Any(u => u.AchievementId == 10 && u.UserId == userId))
+                {
+                    EX_UserAchievement uachievement10 = new EX_UserAchievement();
+                    uachievement10.AchievementId = 10;
+                    uachievement10.UserId = userId;
+                    uachievement10.UserSeen = false;
+                    achievementcontext.EX_UserAchievement.Add(uachievement10);
+                }
+                achievementcontext.SaveChanges();
+            }
+            
+
+
+            return Json(json);
+        }
 
         //
         // POST: /Manage/RemoveLogin

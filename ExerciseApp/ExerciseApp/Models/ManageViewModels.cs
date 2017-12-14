@@ -68,6 +68,7 @@ namespace ExerciseApp.Models
     }
     public class GetChallengeDetails
     {
+        public string ThisUser { get; set; }
         public int ChallengeId { get; set; }
         public string ChallengerId { get; set; }
         public string ChallengedId { get; set; }
@@ -106,6 +107,7 @@ namespace ExerciseApp.Models
         public int Areyouchallenged { get; set; }
         public bool ChallengeEnded { get; set; }
         public string ChallengeWinner { get; set; }
+        public int ThisUserWon { get; set; }
         public virtual IEnumerable<GetChallenges> ReadableChallenges { get; set; }
     }
 
