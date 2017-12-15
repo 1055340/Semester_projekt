@@ -19,6 +19,7 @@
 
     $('.acc-btn > a').click(function () {
         $('#challengeModal .modal-body').empty();
+        $('<img class="loader center-block animated rubberBand infinite" src="/images/logo.png" />').hide().appendTo('#challengeModal .modal-body').fadeIn(400);
         var id = $(this).parent().parent().data('id');
         ;
         $.ajax({
@@ -30,6 +31,7 @@
                 id: id
             },
             success: function (data) {
+                $('#challengeModal .modal-body').empty();
                 var myJSON = JSON.stringify(data);
                 var obj = eval('(' + myJSON + ')')[0];
                 var ChallengerPercentageToWin = (obj.ChallengerValue / obj.ChallengeGoal) * 100;

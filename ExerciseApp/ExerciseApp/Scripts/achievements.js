@@ -5,6 +5,8 @@ $.ajax({
     datatype: 'json',
     data: { order: 'Client_Call' },
     success: function (data) {
+        console.log("wew");
+        $('.loader').remove();
         var JsonArray = JSON.parse(data);
         for (var i = 0; i < JsonArray.length; i++) {
             var obj = JsonArray[i];

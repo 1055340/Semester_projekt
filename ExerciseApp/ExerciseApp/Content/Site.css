@@ -10,6 +10,19 @@ body {
 a, a:hover, a:active, a:visited, a:focus {
     text-decoration: none;
 }
+
+/*LOADER*/
+.loader {
+    height: auto;
+    width: 30%;
+    margin: auto;
+    position: absolute;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    animation-duration: 2s !important;
+}
 /* Set padding to keep content from hitting the edges */
 .body-content {
     padding-left: 15px;
