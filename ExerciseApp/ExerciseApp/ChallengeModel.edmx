@@ -4,7 +4,7 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-      <Schema Namespace="mmda0915_1055358Model.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+      <Schema Namespace="ChallengeModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
         <EntityType Name="EX_ChallengeTable">
           <Key>
             <PropertyRef Name="ChallengeId" />
@@ -13,23 +13,23 @@
           <Property Name="ChallengerId" Type="nvarchar" MaxLength="128" Nullable="false" />
           <Property Name="ChallengedId" Type="nvarchar" MaxLength="128" Nullable="false" />
           <Property Name="ChallengedAccepted" Type="bit" />
-          <Property Name="ChallengerValue" Type="int" />
-          <Property Name="ChallengedValue" Type="int" />
           <Property Name="ExerciseId" Type="int" Nullable="false" />
           <Property Name="ChallengeGoal" Type="int" Nullable="false" />
           <Property Name="ChallengeStart" Type="datetime" Nullable="false" />
           <Property Name="ChallengeEnd" Type="datetime" Nullable="false" />
           <Property Name="ChallengeScore" Type="int" Nullable="false" />
           <Property Name="ChallengeTitle" Type="nvarchar" MaxLength="50" />
+          <Property Name="ChallengeEnded" Type="bit" Nullable="false" />
+          <Property Name="ChallengeWinner" Type="nvarchar" MaxLength="128" />
         </EntityType>
-        <EntityContainer Name="mmda0915_1055358ModelStoreContainer">
+        <EntityContainer Name="ChallengeModelStoreContainer">
           <EntitySet Name="EX_ChallengeTable" EntityType="Self.EX_ChallengeTable" Schema="dbo" store:Type="Tables" />
         </EntityContainer>
       </Schema>
     </edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
-      <Schema Namespace="mmda0915_1055358Model" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+      <Schema Namespace="ChallengeModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
         <EntityType Name="EX_ChallengeTable">
           <Key>
             <PropertyRef Name="ChallengeId" />
@@ -38,16 +38,16 @@
           <Property Name="ChallengerId" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
           <Property Name="ChallengedId" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
           <Property Name="ChallengedAccepted" Type="Boolean" />
-          <Property Name="ChallengerValue" Type="Int32" />
-          <Property Name="ChallengedValue" Type="Int32" />
           <Property Name="ExerciseId" Type="Int32" Nullable="false" />
           <Property Name="ChallengeGoal" Type="Int32" Nullable="false" />
           <Property Name="ChallengeStart" Type="DateTime" Nullable="false" Precision="3" />
           <Property Name="ChallengeEnd" Type="DateTime" Nullable="false" Precision="3" />
           <Property Name="ChallengeScore" Type="Int32" Nullable="false" />
           <Property Name="ChallengeTitle" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="ChallengeEnded" Type="Boolean" Nullable="false" />
+          <Property Name="ChallengeWinner" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
         </EntityType>
-        <EntityContainer Name="mmda0915_1055358Entities3" annotation:LazyLoadingEnabled="true">
+        <EntityContainer Name="mmda0915_1055358Entities4" annotation:LazyLoadingEnabled="true">
           <EntitySet Name="EX_ChallengeTable" EntityType="Self.EX_ChallengeTable" />
         </EntityContainer>
       </Schema>
@@ -55,22 +55,22 @@
     <!-- C-S mapping content -->
     <edmx:Mappings>
       <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
-        <EntityContainerMapping StorageEntityContainer="mmda0915_1055358ModelStoreContainer" CdmEntityContainer="mmda0915_1055358Entities3">
+        <EntityContainerMapping StorageEntityContainer="ChallengeModelStoreContainer" CdmEntityContainer="mmda0915_1055358Entities4">
           <EntitySetMapping Name="EX_ChallengeTable">
-            <EntityTypeMapping TypeName="mmda0915_1055358Model.EX_ChallengeTable">
+            <EntityTypeMapping TypeName="ChallengeModel.EX_ChallengeTable">
               <MappingFragment StoreEntitySet="EX_ChallengeTable">
                 <ScalarProperty Name="ChallengeId" ColumnName="ChallengeId" />
                 <ScalarProperty Name="ChallengerId" ColumnName="ChallengerId" />
                 <ScalarProperty Name="ChallengedId" ColumnName="ChallengedId" />
                 <ScalarProperty Name="ChallengedAccepted" ColumnName="ChallengedAccepted" />
-                <ScalarProperty Name="ChallengerValue" ColumnName="ChallengerValue" />
-                <ScalarProperty Name="ChallengedValue" ColumnName="ChallengedValue" />
                 <ScalarProperty Name="ExerciseId" ColumnName="ExerciseId" />
                 <ScalarProperty Name="ChallengeGoal" ColumnName="ChallengeGoal" />
                 <ScalarProperty Name="ChallengeStart" ColumnName="ChallengeStart" />
                 <ScalarProperty Name="ChallengeEnd" ColumnName="ChallengeEnd" />
                 <ScalarProperty Name="ChallengeScore" ColumnName="ChallengeScore" />
                 <ScalarProperty Name="ChallengeTitle" ColumnName="ChallengeTitle" />
+                <ScalarProperty Name="ChallengeEnded" ColumnName="ChallengeEnded" />
+                <ScalarProperty Name="ChallengeWinner" ColumnName="ChallengeWinner" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

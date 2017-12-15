@@ -1,7 +1,8 @@
 ﻿@model ExerciseApp.Models.ExternalLoginListViewModel
 @using Microsoft.Owin.Security
 
-<h4>To see this page, please log in</h4>
+@*<h4>To see this page, please log in</h4>*@
+<p style="font-size:14px; padding-top:35px;"><b>Note</b><br />For use this application, you need to sign in with facebook account</p><br />
 @{
     var loginProviders = Context.GetOwinContext().Authentication.GetExternalAuthenticationTypes();
     if (loginProviders.Count() == 0) {
@@ -15,10 +16,17 @@
     else {
         using (Html.BeginForm("ExternalLogin", "Account", new { ReturnUrl = Model.ReturnUrl })) {
             @Html.AntiForgeryToken()
-            <div id="socialLoginList">
+            <div id="socialLoginList" style="width:100%;">
                 <p>
-                    @foreach (AuthenticationDescription p in loginProviders) {
-                        <button type="submit" class="btn btn-default" id="@p.AuthenticationType" name="provider" value="@p.AuthenticationType" title="Log in using your @p.Caption account">@p.AuthenticationType</button>
+                    @foreach (AuthenticationDescription p in loginProviders)
+                    {
+                        <button id="@p.AuthenticationType"  name="provider" value="@p.AuthenticationType" type="submit" class="signInButton" type="button">
+                            <span>
+                                <img id="facebookIkon" src="/images/facebook-icon.png"><b>Login</b> with <b>@p.AuthenticationType</b>
+                            </span>
+                        </button>
+
+                        @*<button type="submit" class="btn btn-default" id="@p.AuthenticationType" name="provider" value="@p.AuthenticationType" title="Log in using your @p.Caption account">@p.AuthenticationType</button>*@
                     }
                 </p>
             </div>

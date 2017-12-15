@@ -5,11 +5,10 @@
 
 
 <div class="xp-popup">
-    <div style="text-align:center;" class="achievement-popup">
+    <div class="achievement-popup">
     </div>
-
 </div>
-<div class="row">
+@*<div class="row">
     <div class="col-md-12">
         <div class="col-md-3">
             <img style="height: 200px; width: 200px; border-radius: 200px" src="@profile_picture" />
@@ -33,18 +32,149 @@
                 <p>@Model.totalXpForThisLevelEquals/@Model.totalXpForNextLevel XP</p>
             </div>
         </div>
-        
-        
+
+
     </div>
     <div class="col-md-12">
         <div class="col-md-12">
             <h1>User Actions</h1>
             <a class="btn btn-success" href="/manage/categories">Add Exercise</a>
         </div>
-        
-    </div>
-    
 
-    
+    </div>
+
+
+</div>*@
+
+
+<div class="animated slideInUp">
+
+
+    <div class="container xx">
+        @*<h2>Carousel Example</h2>*@
+        <div id="myCarousel" class="carousel slide" data-ride="carousel">
+            <!-- Indicators -->
+            <ol class="carousel-indicators">
+                <li data-target="#myCarousel" data-slide-to="0" @*class="active"*@></li>
+                <li data-target="#myCarousel" data-slide-to="1"></li>
+                <li data-target="#myCarousel" data-slide-to="2"></li>
+            </ol>
+
+            <!-- Wrapper for slides -->
+            <div class="carousel-inner">
+
+                <div class="item active">
+                    <div class="container-fluid">
+                        <canvas id="myBarChart" width="450" height="320"></canvas>
+                    </div>
+                </div>
+
+                <div class="item">
+                    <div class="container-fluid">
+                        <canvas id="myLineChart" width="450" height="320"></canvas>
+                    </div>
+                </div>
+
+                <div class="item">
+                    <div class="container-fluid">
+                        <canvas id="myDonutChart" width="450" height="320"></canvas>
+                    </div>
+                </div>
+
+                @*<div class="item">
+                        <div class="container">
+                            <canvas id="myChart" width="400" height="400"></canvas>
+                        </div>
+                    </div>*@
+
+            </div>
+
+            <!-- Left and right controls -->
+            @*<a class="left carousel-control" href="#myCarousel" data-slide="prev">
+                    <span class="glyphicon glyphicon-chevron-left"></span>
+                    <span class="sr-only">Previous</span>
+                </a>
+                <a class="right carousel-control" href="#myCarousel" data-slide="next">
+                    <span class="glyphicon glyphicon-chevron-right"></span>
+                    <span class="sr-only">Next</span>
+                </a>*@
+        </div>
+
+    </div>
+
+
+
+
+
+    @*<div class="container">
+            <canvas id="myChart" width="400" height="400"></canvas>
+        </div>*@
+
+
+
+
+    <div class="col-md-12 profilNameAge">
+        <img id="profilImag" src="@profile_picture" />
+        <div class="nameAge">
+            <span>@Model.UserFirstName @Model.UserLastName</span>
+            <p>@Model.UserBirthday</p>
+        </div>
+    </div>
+
+    <div class="row profilCover">
+
+        <div class="container ">
+            <div class="col-md-12 rival">
+                <div class="col-xs-3"><p class="levelNr">@Model.currentUserLevel</p><hr style="margin-bottom:2px; margin-top:-17px;" /><p class="levelNr2">level</p></div>
+                <div class=" col-md-7 XPprogress">
+                    <div class="progress-bar " role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" data-currentxp="@Model.totalXpForThisLevelEquals" data-nextlevel="@Model.totalXpForNextLevel">
+                        @*indsæt værdi her for prograss bar*@
+                    </div>
+                    <div id="xpPoint" class="col-md-12">
+                        <p>@Model.totalXpForThisLevelEquals xp</p><p style="float:right; margin-top:-28px;">@Model.totalXpForNextLevel xp</p>
+                    </div>
+
+                </div>
+
+
+                <div class="col-xs-3">
+                    <p class="levelNr">
+                        @Model.nextUserLevel
+                    </p><hr style="margin-bottom:2px; margin-top:-17px;" /><p class="levelNr2">level</p>
+                </div>
+            </div>
+        </div>
+
+
+        <div class="container">
+            <div class="col-md-12 Achievements">
+                <p style="display: inline;">Achievements</p>
+                <p style="display: inline; float: right;">200</p>
+                <hr style="width:100%;" />
+            </div>
+        </div>
+
+
+        <div class="container">
+            <div class="col-md-12 TotalKg">
+                <p style="display: inline;">Total kg</p>
+                <p style="display: inline; float: right;">1270 kg</p>
+                <hr style="width:100%;" />
+            </div>
+        </div>
+
+        <div class="container">
+            <div class="col-md-12 TotalKm">
+                <p style="display: inline;">Total km</p>
+                <p style="display: inline; float: right;">200 km</p>
+                <hr style="width:100%;" />
+            </div>
+        </div>
+    </div>
 </div>
-<script src="~/Scripts/main.js"></script>
+
+
+
+
+
+<script src="~/Scripts/profilepage.js"></script>

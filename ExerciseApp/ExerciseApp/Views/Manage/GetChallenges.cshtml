@@ -4,13 +4,12 @@
     ViewBag.Title = "GetChallenges";
 }
 
-<h2>Challenges</h2>
 <div class="row">
-
+    <h3>Running challenges</h3>
 
     @foreach (var item in Model)
     {
-        <div style="border:1px solid #e9e9e9; padding: 15px;" class="challenger col-xs-12" data-id="@Html.DisplayFor(Modelitem => item.ChallengeId)" data-accept="@Html.DisplayFor(Modelitem => item.Areyouchallenged)">
+        <div style="border:1px solid #e9e9e9; padding: 15px;" class="challenger col-xs-12" data-id="@Html.DisplayFor(Modelitem => item.ChallengeId)" data-accept="@Html.DisplayFor(Modelitem => item.Areyouchallenged)" data-won="@Html.DisplayFor(Modelitem => item.ThisUserWon)">
             <div class="col-xs-8" >
                 <span style="font-weight:bold;">@Html.DisplayFor(Modelitem => item.ChallengeTitle)</span>
                 <span>(@Html.DisplayFor(Modelitem => item.exerciseName))</span>
@@ -30,9 +29,14 @@
                     <h4 class="modal-title"></h4>
                 </div>
                 <div class="modal-body">
+                    <img class="loader center-block animated rubberBand infinite" src="~/images/logo.png" />
                 </div>
             </div>
         </div>
     </div>
 </div>
+<div class="won-challenges row">
+    <h3>Won challenges</h3>
+</div>
 <script src="~/Scripts/challengelist.js"></script>
+<script src="~/Scripts/jquery.countdown.min.js"></script>

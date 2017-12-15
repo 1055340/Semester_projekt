@@ -8,6 +8,7 @@
     @Styles.Render("~/Content/css")
     @Scripts.Render("~/bundles/modernizr")
     @Scripts.Render("~/bundles/jquery")
+    <script src="~/Scripts/general.js"></script>
     <link href="~/Content/animate.css" rel="stylesheet" />
     <link href="~/Content/jasny-bootstrap.min.css" rel="stylesheet" />
 
@@ -25,7 +26,6 @@
             <li>@Html.ActionLink("Add Exercise", "Categories", "Manage")</li>
             <li>@Html.ActionLink("Achievements", "Achievements", "Manage")</li>
             <li>@Html.ActionLink("Challenges", "GetChallenges", "Manage")</li>
-            <li>@Html.ActionLink("ChallengeFriendList", "ChallengeFriendList", "Manage")</li>
             
         </ul>
     </nav>

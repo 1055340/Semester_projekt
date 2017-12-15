@@ -364,8 +364,8 @@ namespace ExerciseApp.Controllers
                         var timesLoggedIn = context.EX_UserLog.Where(u => u.UserId == UserId).Count();
                         using (UserAchievementEntities userachievementcontext = new UserAchievementEntities())
                         {
-                            var alreadyHasAchievement4 = userachievementcontext.EX_UserAchievement.Any(u => u.AchievementId == 4);
-                            var alreadyHasAchievement5 = userachievementcontext.EX_UserAchievement.Any(u => u.AchievementId == 5);
+                            var alreadyHasAchievement4 = userachievementcontext.EX_UserAchievement.Any(u => u.AchievementId == 4 && u.UserId == UserId);
+                            var alreadyHasAchievement5 = userachievementcontext.EX_UserAchievement.Any(u => u.AchievementId == 5 && u.UserId == UserId);
 
                             //Hvis achievementet ikke er opnået, men brugeren har logget ind 10 gange eller mere, tildeles achievementet
                             if (timesLoggedIn >= 1 && alreadyHasAchievement4 == false) {
