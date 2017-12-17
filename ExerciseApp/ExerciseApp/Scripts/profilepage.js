@@ -1,4 +1,7 @@
 ﻿$(document).ready(function () {
+   
+
+
     //Ajax kald som tjekker om brugeren har fået noget xp som de ikke har fået en popup for endnu
     $.ajax({
         url: '/Manage/GetXpPopup',

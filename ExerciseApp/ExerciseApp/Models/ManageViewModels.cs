@@ -29,6 +29,36 @@ namespace ExerciseApp.Models
         public bool TwoFactor { get; set; }
         public bool BrowserRemembered { get; set; }
     }
+    public class HomeViewModel
+    {
+        public string UserId { get; set; }
+        public int UserTotalXp { get; set; }
+        public int currentUserLevel { get; set; }
+        public int xpNeededForNext { get; set; }
+        public int nextUserLevel { get; set; }
+        public int totalXpForThisLevelEquals { get; set; }
+        public int totalXpForNextLevel { get; set; }
+        public string UserEmail { get; set; }
+        public string UserFirstName { get; set; }
+        public string UserLastName { get; set; }
+        public string UserGender { get; set; }
+        public string FacebookToken { get; set; }
+        public string UserBirthday { get; set; }
+        public string currentDay { get; set; }
+        public string currentDate { get; set; }
+        public int unlockedAchievements { get; set; }
+        public int totalAchievements { get; set; }
+    }
+    public class ChartDataViewModel
+    {
+        public string ExerciseName { get; set; }
+        public int ExerciseCount { get; set; }
+        public virtual IEnumerable<GetChallenges> TopExercises { get; set; }
+        public int strengthInput { get; set; }
+        public int cardioInput { get; set; }
+        public virtual IEnumerable<GetChallenges> TotalInputs { get; set; }
+
+    }
     public class UserAchievements : DbContext
     {
         public string UserId { get; set; }

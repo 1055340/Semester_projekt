@@ -434,6 +434,7 @@
     <Content Include="images\challenge-goal.png" />
     <Content Include="images\facebook-icon.png" />
     <Content Include="images\logo.png" />
+    <Content Include="images\trophy.png" />
     <Content Include="image\blank.gif" />
     <Content Include="image\particles.gif" />
     <Content Include="Scripts\achievements.js" />
@@ -484,7 +485,9 @@
     <Content Include="Scripts\challengecategories.js" />
     <Content Include="Scripts\challengefriendlist.js" />
     <Content Include="Scripts\challengelist.js" />
+    <Content Include="Scripts\charts.js" />
     <Content Include="Scripts\general.js" />
+    <Content Include="Scripts\home.js" />
     <Content Include="Scripts\jasny-bootstrap.min.js" />
     <Content Include="Scripts\jquery-3.2.1.js" />
     <Content Include="Scripts\jquery-3.2.1.min.js" />
@@ -632,6 +635,7 @@
     <Content Include="Views\Manage\ChallengeFriendList.cshtml" />
     <Content Include="Views\Manage\ChallengeCategories.cshtml" />
     <Content Include="Views\Manage\GetChallenges.cshtml" />
+    <Content Include="Views\Manage\Home.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

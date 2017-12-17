@@ -7,16 +7,15 @@
 @foreach (var item in Model.data)
 {
     <div class="row">
-        <div class="challenge-friend col-xs-12">
+        <div class="challenge-friend col-xs-12 challenged">
             <div class="col-xs-3">
-                <img style="border-radius:200px; height: 65px; width: 65px;" src="@Html.DisplayFor(modelItem => item.picture.data.url)" />
+                <img style="border-radius:200px; height: 70px; width: 70px;" src="@Html.DisplayFor(modelItem => item.picture.data.url)" />
             </div>
-            <div class="challenged-name col-xs-5" style="padding: 20px 0;" data-id="@Html.DisplayFor(modelItem => item.id)">
+            <div class="challenged-name col-xs-9" data-id="@Html.DisplayFor(modelItem => item.id)">
                 <span style="font-weight:bold; margin: 15px 0px;">@Html.DisplayFor(modelItem => item.name)</span>
+                <a style="float:right;" class="">></a>
             </div>
-            <div class="col-xs-4" style="padding: 15px 0;">
-                <a style="float:right;" class="challenged btn btn-success" >Vælg</a>
-            </div>
+                
         </div>
     </div>
 }
