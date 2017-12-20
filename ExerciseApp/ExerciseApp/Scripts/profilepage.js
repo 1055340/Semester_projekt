@@ -1,4 +1,7 @@
 ﻿$(document).ready(function () {
+   
+
+
     //Ajax kald som tjekker om brugeren har fået noget xp som de ikke har fået en popup for endnu
     $.ajax({
         url: '/Manage/GetXpPopup',
@@ -222,10 +225,10 @@
 
 
 
-    var currentxp = $('.level-container').data('currentxp');
-    var nextxp = $('.level-container').data('nextlevel');
+    var currentxp = $('.progress-bar').data('currentxp');
+    var nextxp = $('.progress-bar').data('nextlevel');
     var xpProgress = (currentxp / nextxp) * 100;
-    $('.level-container > .xp-bar > div').animate({
+    $('.progress-bar').animate({
         width: (xpProgress + '%')
     }, 200);
 

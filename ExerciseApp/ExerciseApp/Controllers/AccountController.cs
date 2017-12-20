@@ -497,7 +497,8 @@ namespace ExerciseApp.Controllers
         public ActionResult LogOff()
         {
             AuthenticationManager.SignOut(DefaultAuthenticationTypes.ApplicationCookie);
-            return RedirectToAction("Index", "Home");
+            //return RedirectToAction("Index", "Home");
+            return RedirectToAction("Home", "Manage");
         }
 
         //
@@ -557,7 +558,8 @@ namespace ExerciseApp.Controllers
             {
                 return Redirect(returnUrl);
             }
-            return RedirectToAction("Index", "Home");
+            //return RedirectToAction("Index", "Home");
+            return RedirectToAction("Home", "Manage");
         }
 
         internal class ChallengeResult : HttpUnauthorizedResult

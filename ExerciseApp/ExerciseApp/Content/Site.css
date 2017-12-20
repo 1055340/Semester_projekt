@@ -1,26 +1,36 @@
-﻿html {
-    min-height:100vh;
+﻿
+
+html {
+    min-height: 100vh;
     height: auto;
+}
+.padding-top-bottom {
+    padding:15px;
 }
 body {
     padding-top: 50px;
-    padding-bottom: 20px;
     background: linear-gradient(#6bb0bc,#d0cece);
+    min-height: 100vh;
+    color:#fff;
 }
 a, a:hover, a:active, a:visited, a:focus {
     text-decoration: none;
 }
 
 /*LOADER*/
-.loader {
-    height: auto;
-    width: 30%;
-    margin: auto;
-    position: absolute;
+.loader-div {
+    background: linear-gradient(#6bb0bc,#d0cece);
+    z-index:4;
+    position:absolute;
     top: 0;
+    right: 0;
     left: 0;
     bottom: 0;
-    right: 0;
+    height: 100%;
+}
+.loader {
+    width: 30%;
+    margin-bottom: 30px;
     animation-duration: 2s !important;
 }
 /* Set padding to keep content from hitting the edges */
@@ -42,38 +52,265 @@ select,
 textarea {
     max-width: 280px;
 }
+/*LOGIN*/
+.signInTop > form {
+    width: 100%;
+}
 
+.signInTop {
+    padding-left: 40px;
+    padding-right: 40px;
+}
+
+#hrFrontPage {
+    margin-top: 32%;
+}
+
+#logo {
+    width: 195px;
+    padding-top: 35%;
+}
+
+.titleSize {
+    font-size: 20px;
+    border-bottom: 2px solid white;
+    width: 63px;
+    padding-bottom: 3px;
+}
+
+.signInButton {
+    width: 100%;
+    border: none;
+    font-size: 20px;
+    background: #3a559f;
+    color: white;
+    height: 55px;
+}
+
+#facebookIkon {
+    padding-left: 0;
+    width: 26px;
+    height: 26px;
+    margin-right: 5%;
+}
+
+hr {
+    margin-top: 10px;
+    margin-bottom: 20px;
+    border: 0;
+    border-top: 2px solid #eeeeee;
+}
+
+.container .jumbotron {
+    border-radius: 6px;
+    margin-top: 17%;
+}
+
+
+.sidenav {
+    height: 100%;
+    width: 0;
+    position: fixed;
+    z-index: 99;
+    top: 0;
+    left: 0;
+    background: linear-gradient(#59a0ad, #b9d8d5);
+    overflow-x: hidden;
+    transition: 0.5s;
+    padding-top: 60px;
+}
+
+    .sidenav a {
+        padding: 8px 8px 8px 32px;
+        text-decoration: none;
+        font-size: 25px;
+        color: #818181;
+        display: block;
+        transition: 0.3s;
+    }
+
+        .sidenav a:hover {
+            color: #f1f1f1;
+        }
+
+    .sidenav .closebtn {
+        position: absolute;
+        top: 0;
+        right: 25px;
+        font-size: 36px;
+        margin-left: 50px;
+    }
+
+/*HOME*/
+.home-profile {
+    display: flex;
+}
+.home-profile > div {
+    align-self: center;
+}
+
+.infoDesp > h1, .infoDesp  h2, .infoDesp > h3 {
+    margin: 0;
+}
+
+.profilpic img {
+    border-radius: 50%;
+    width: 122px;
+    float: right;
+}
+
+#motivation {
+    font-size: 20px;
+}
+ 
+.homeTrophy {
+    display: flex;
+    margin-top: 4%;
+    /*padding: 0;
+    padding-left:1%;*/
+}
+
+.homeTrophyImg {
+    padding: 0;
+    border-right-style: solid;
+    padding-right: 3%;
+}
+
+    .homeTrophyImg img {
+        height: 66px;
+    }
+
+.homeTrophyCount {
+    text-align: center;
+}
+.homeTrophyCount > h1 {
+    font-size: 26px;
+}
+
+.enterResultButton p, .enterResultButton > a {
+    color: #fff;
+    margin: 0;
+}
+
+.enterResultButton {
+    padding: 3.5%;
+    width: 100%;
+    margin: 5px 0;
+    font-size: 20px;
+    border-radius: 30px;
+    background: none;
+    color: white;
+    border: 2px solid white;
+}
+.daily-challenge {
+    text-align: center;
+}
+
+.repsMargin input {
+    float: right;
+}
+
+.x {
+    margin-bottom: 6%;
+}
+
+/*CATEGORIES*/
+.category-container > div {
+    text-align: center;
+   
+}
 .categories {
-    border-radius:200px;
+    display: flex;
+    border-radius: 200px;
     border: 1px solid #e9e9e9;
     text-align: center;
-    margin: 5px 0;
-    padding: 15px;
+    margin: 5px 13%;
+    padding: 0px;
+    background-color: #fff;
     transition: border-color .3s;
+    width: 75px;
+    height: 75px;
 }
 .categories:hover {
     transition: border-color .3s;
     border-color: #252525;
 }
+.categories img {
+    align-self: center;
+    margin: 0 auto;
+}
+
 .categories > p {
     margin: 0;
 }
+.submit-exercise {
+    padding: 3.5%;
+    width: 100%;
+    font-size: 15px;
+    background: none;
+    color: white;
+    border-radius: 20px;
+    /* margin-bottom: 5%; */
+    margin: 24px 2% 0 0;
+    border: 2px solid white;
+}
+.cancel-exercise {
+    padding: 3.5%;
+    width: 100%;
+    font-size: 15px;
+    background: none;
+    color: red;
+    /* margin-bottom: 5%; */
+    margin: 4% 2% 0 0;
+    border: 2px solid red;
+    border-radius: 20px;
+}
+.exercise-input {
+    width: 100%;
+    height: 40px;
+    font-size: 15px;
+    color: white;
+    background: none;
+    border: 2px;
+    border-bottom: 2px solid white;
+    text-align: center;
+    padding: 0 5px;
+}
+.exercise-input::placeholder {
+    color: #fff;
+}
+.exercise-input:focus{
+    outline: none;
+}
+
 #challengeModal  .modal-body > .row {
     text-align:center;
 }
-
+.modal-header {
+    border: none;
+    padding-top:0;
+}
+.modal-header .close {
+    margin-top: 0;
+}
 .modal-dialog {
+    display:flex;
     width: 100%;
     height: 100%;
     margin: 0;
     padding: 5px;
-    background: linear-gradient(#6bb0bc,#d0cece);
+}
+.modal {
+    height: auto;
 }
 
 .modal-content {
     height: auto;
-    min-height: 100%;
-    background: linear-gradient(#6bb0bc,#d0cece);
+    min-width:100%;
+    min-height: 300px;
+    align-self: center;
+    background: linear-gradient(#6bb0bc,#d0cece) !important;
+    background-color:none !important;
 }
 .modal-append {
     text-align: center;
@@ -89,11 +326,270 @@ textarea {
     height: 200px;
     width: 200px;
 }
+.modal-title {
+    margin: 10px 0 33px 0;
+    line-height: 1.428571429;
+    text-align: center;
+    font-size: 21px;
+}
 
 
 /*
-    XP SHOWER
+    PROFILE PAGE
 */
+.row {
+    /*padding-left: 20px;
+    padding-right: 20px;*/
+}
+
+.profilCover {
+    background-color: #f4f6f657;
+    margin-top: -14%;
+    padding-top: 14%;
+    padding-bottom:14%;
+}
+
+.Achievements, .TotalKg, .TotalKm {
+    font-size: 15px;
+}
+
+.TotalKm {
+    padding-bottom: 7%;
+}
+
+
+#profilImag {
+    width: 104px;
+    height: 104px;
+    border-radius: 50%;
+    margin-top: -16%;
+}
+
+.profilNameAge {
+    margin-top: 8%;
+    padding-bottom: 10px;
+}
+
+.nameAge {
+    display: inline-block;
+    margin-left: 3%;
+    font-size: 21px;
+    padding-top: 6%;
+}
+
+.trophy {
+    font-size: 39px;
+}
+
+.navbar-toggle .icon-bar {
+    background-color: white;
+}
+
+
+
+
+.level {
+    font-size: 39px;
+    padding-top: 4%;
+    display: flex;
+    margin-bottom: 1%;
+}
+
+.rival {
+    font-size: 16px;
+    /* padding-top: 4%; */
+    display: flex;
+    padding: 0;
+    margin-bottom: 2%;
+}
+
+.rivalTest {
+    font-size: 16px;
+    /* padding-top: 4%; */
+    padding: 0;
+    margin-bottom: 2%;
+}
+
+.exercisInfo {
+    margin-top: 4%;
+    line-height: 0.8;
+    font-size: 16px;
+}
+
+.titleInfo {
+    margin-top: 4%;
+    line-height: 0.8;
+    font-size: 16px;
+    margin-bottom: 4%;
+}
+
+.excerciseName, .nameExercise {
+    font-size: 22px;
+}
+
+.XPprogress {
+    height: 3px;
+    width: 100%;
+    padding: 0;
+    margin-left: 1%;
+    margin-right: 1%;
+    margin-top: 35px;
+    /*overflow: hidden;*/
+    background-color: #f5f5f5;
+    border-radius: 4px;
+    box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.1);
+}
+
+.progress {
+    height: 3px;
+    width: 100%;
+    padding: 0;
+    margin-left: 3%;
+    margin-right: 1.5%;
+    margin-top: 11px;
+    overflow: hidden;
+    background-color: #f5f5f5;
+    border-radius: 4px;
+    box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.1);
+}
+
+.progressTest {
+    height: 3px;
+    width: 100%;
+    padding: 0;
+    margin-top: 11px;
+    overflow: hidden;
+    background-color: #f5f5f5;
+    border-radius: 4px;
+    box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.1);
+}
+
+.cc {
+    margin-bottom: 20px;
+}
+
+.progressBar {
+    height: 15px;
+    width: 100%;
+    padding: 0;
+    margin-top: 11px;
+    overflow: hidden;
+    background-color: #f5f5f5;
+    border-radius: 50px;
+    box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.1);
+}
+
+.rivalTrophy {
+    float: right;
+    margin-top: -7%;
+    margin-bottom: 2%;
+}
+
+.rival img {
+    width: 37px;
+    height: 30px;
+}
+
+.rivalTrophy img {
+    width: 37px;
+    height: 30px;
+}
+
+.nameSpace {
+    width: 100px;
+    margin-bottom: -8px;
+}
+
+.levelNr {
+    font-size: 42px;
+}
+
+#xpPoint {
+    padding: 0;
+    font-size: 12.5px;
+    margin-top: 3%;
+}
+
+.levelNr2 {
+    font-size: 16px;
+    text-align: center;
+}
+
+.progress-bar {
+    /*float: left;*/
+    width: 0;
+    height: 100%;
+    font-size: 12px;
+    color: #ffffff;
+    text-align: center;
+    background-color: #ffec0a;
+    -webkit-box-shadow: inset 0 -1px 0 rgba(0, 0, 0, 0.15);
+    box-shadow: inset 0 -1px 0 rgba(0, 0, 0, 0.15);
+    -webkit-transition: width 0.6s ease;
+    transition: width 0.6s ease;
+}
+
+.chalDate {
+    /*padding:0;*/
+    /*display:flex;*/
+    margin-top: 2%;
+    font-size: 16px;
+}
+
+.kmDiv {
+    padding: 0;
+    /*display: flex;*/
+    margin-top: 4%;
+    font-size: 16px;
+}
+
+.CategoriesPopup {
+    margin: 0px 0px 17px 0px;
+}
+
+.endDate p, .startDate p {
+    padding: 0;
+    padding-top: 2%;
+    width: 125px;
+}
+
+.endDate input, .startDate input {
+    padding: 0;
+    padding-left: 4%;
+}
+
+.startDate, .endDate {
+    display: flex;
+    margin: 9px 0px 9px 0px
+}
+
+    .startDate p, .endDate p, .km p, .detailDesp p {
+        margin: 0;
+    }
+
+.detailDesp textarea {
+    border: 2px solid white;
+}
+
+.detailDesp {
+    margin-top: -2%;
+    font-size: 16px;
+    margin-bottom: 5%;
+}
+
+    .detailDesp p {
+        font-size: 16px;
+    }
+
+.despTextboks {
+    border: 2px solid;
+    padding: 3%;
+}
+
+
+
+
+/*XP POPUP*/
 .level-container {
     padding: 15px;
     border: 1px solid #e9e9e9;
@@ -122,6 +618,28 @@ textarea {
     text-align: center;
     border: 1px solid #e9e9e9;
 }
+
+/*CSS TIL CAROUSEL*/
+.carousel-indicators {
+    position: absolute;
+    bottom: -25px;
+    right: 0;
+    left: 0;
+    margin: auto;
+    text-align: center;
+    padding: 0;
+}
+.carousel-control {
+    background-image: none !important;
+}
+.carousel-control .icon-prev, .carousel-control .glyphicon-chevron-left {
+    left: 25% !important;
+}
+    .carousel-control .icon-next, .carousel-control .glyphicon-chevron-right {
+        right: 25% !important;
+    }
+
+
 
 
 /*Navbar Customization*/
@@ -235,7 +753,27 @@ textarea {
     height: 75px;
     width: 75px;
 }
+.challenge-categories-container div {
+    text-align:center;
+}
+.challenge-categories-container > div div:not(:last-child) div div {
+    background-color:#fff;
+}
+.create-challenge-btn {
+    padding: 3.5%;
+    width: 100%;
+    font-size: 15px;
+    background: none;
+    color: white;
+    border-radius: 20px;
+    margin: 24px 2% 0 0;
+    border: 2px solid white;
+}
 /*ChallengeList*/
+.challenge-container > h3 {
+    display: inline-block;
+    margin:10px 0 0 0;
+}
 .acc-btn > a {
     float:right;
 }
@@ -245,6 +783,23 @@ textarea {
     font-size: 2.5em;
     color: #fff !important;
     text-decoration-style: none;
+}
+.challenger {
+    height: 100px;
+    display:flex;
+    padding: 12px;
+    background-color: #f4f6f657;
+    margin-bottom: 3%;
+    border-radius: 15px;
+}
+.challenger .acc-btn{
+    align-self: center;
+    
+}
+.challenger > .acc-btn > a {
+    background-color: transparent;
+    border: none;
+    font-size: 1.2em;
 }
 /*Challenge-Details*/
 .rival {
@@ -297,10 +852,28 @@ textarea {
 
 /*ChallengeFriendList*/
 .challenge-friend {
-    padding: 15px;
-    margin: 1px 0;
-    border-top: 1px solid #e9e9e9;
-    border-bottom: 1px solid #e9e9e9;
+    display: flex;
+    padding: 5px 15px;
+}
+.challenge-friend .col-xs-3 {
+    padding:0;
+}
+.challenge-friend div {
+    align-self: center;
+    display: flex;
+}
+.challenge-friend div span{
+    align-self: center;
+}
+.challenge-friend div a {
+    align-self: center;
+    position: absolute;
+    right: 15px;
+}
+.challenged-name {
+    background-color: #f4f6f657;
+    border-radius: 15px;
+    padding: 10px;
 }
 /*Level up animation, lånt fra https://codepen.io/sp725/pen/ZYBELO*/
 #container1 {

@@ -56,6 +56,83 @@ namespace ExerciseApp.Controllers
             }
         }
         [HttpGet]
+        public ActionResult Home()
+        {
+            var userId = User.Identity.GetUserId();
+            var model = new HomeViewModel{};
+
+            //Her samles de værdier som skal bruges for at vise profilsiden
+            using (UserLevelXpEntities levelcontext = new UserLevelXpEntities())
+            {
+                //if statementet er til for at undgå den null-error som kommer hvis databasen returnerer 0, når vi prøver at hente brugerens level
+                int xpSum;
+                if (!levelcontext.EX_UserLevel.Where(u => u.UserId == userId).Any())
+                {
+                    xpSum = 0;
+                }
+                else
+                {
+                    var xpToSum = levelcontext.EX_UserLevel.Where(u => u.UserId == userId);
+                    xpSum = xpToSum.AsQueryable().Sum(pkg => pkg.UserXp);
+                }
+
+
+                var next = levelcontext.EX_LevelTable.FirstOrDefault(u => u.TotalLevelXp > xpSum);
+
+                int totalXpForThisLevel;
+                //if statementet er til for at undgå den null-error som kommer hvis databasen returnerer 0, når vi prøver at hente brugerens level
+                if (!levelcontext.EX_LevelTable.Any(u => u.LevelId == next.LevelId - 1))
+                {
+                    totalXpForThisLevel = 0;
+                }
+                else
+                {
+                    totalXpForThisLevel = levelcontext.EX_LevelTable.FirstOrDefault(u => u.LevelId == next.LevelId - 1).TotalLevelXp;
+                }
+
+                var totalXpForThisLevelEquals = xpSum - totalXpForThisLevel;
+                var totalXpForNextLevel = next.TotalLevelXp - totalXpForThisLevel;
+
+                //Informationen bindes til instancen af brugermodellen, og sendes til viewet
+                model.UserTotalXp = xpSum;
+                model.xpNeededForNext = next.TotalLevelXp;
+                model.currentUserLevel = next.LevelId - 1;
+                model.nextUserLevel = next.LevelId;
+                model.totalXpForThisLevelEquals = totalXpForThisLevelEquals;
+                model.totalXpForNextLevel = totalXpForNextLevel;
+                IEnumerable<EX_UserLevel> totalUserXp = new List<EX_UserLevel>();
+            }
+            //Informationer bindes til instancen af brugermodellen, og sendes til viewet
+            using (UserSettingsEntities context = new UserSettingsEntities())
+            {
+                EX_UserSettings user = context.EX_UserSettings.FirstOrDefault(r => r.UserId == userId);
+                model.UserId = user.FacebookId;
+                model.UserFirstName = user.UserFirstName;
+                model.UserLastName = user.UserLastName;
+                model.UserGender = user.UserGender;
+                var dt = user.UserBirthday;
+                model.UserBirthday = String.Format("{0:dd/MM/yyyy}", dt);
+                model.currentDay = DateTime.Now.DayOfWeek.ToString();
+                model.currentDate = DateTime.Now.Date.ToShortDateString();
+                using (AchievementsEntities achcontext = new AchievementsEntities())
+                {
+                    var totalachievements = achcontext.EX_AchievementTable.Count();
+
+                    model.totalAchievements = totalachievements;
+                }
+                using (UserAchievementEntities userachcontext = new UserAchievementEntities())
+                {
+                    var unlockedachievements = userachcontext.EX_UserAchievement.Where(u => u.UserId == userId).Count();
+
+                    model.unlockedAchievements = unlockedachievements;
+                }
+                    
+            };
+
+            return View(model);
+        }
+
+        [HttpGet]
         public ActionResult ChallengeFriendList()
         {
             using (UserSettingsEntities context = new UserSettingsEntities())
@@ -260,7 +337,7 @@ namespace ExerciseApp.Controllers
                             {
                                 totalrunningkm += runningkm.ExerciseValue;
                             }
-                            if (totalrunningkm >= 42.195)
+                            if (totalrunningkm >= 42)
                             {
                                 EX_UserAchievement achievement6 = new EX_UserAchievement();
                                 achievement6.AchievementId = 6;
@@ -408,6 +485,56 @@ namespace ExerciseApp.Controllers
                     userexercisecontext.SaveChanges();
                     json = JsonConvert.SerializeObject(popups);
                     return Json(json);
+                }
+            }
+        }
+        [HttpPost]
+        public JsonResult ChartData()
+        {
+            using (UserInputExerciseEntities usercontext = new UserInputExerciseEntities())
+            {
+                using (CategoryEntities exercisecontext = new CategoryEntities())
+                {
+                    string json = "test";
+                var userId = User.Identity.GetUserId();
+
+                var query = from s in usercontext.EX_UserExercise
+                            where s.UserId == userId
+                            group s by s.ExerciseId into g  // group by member Id
+                            let loginsCount = g.Count()  // get count of entries for each member
+                            orderby loginsCount descending // order by entries count
+                            select new
+                            { // create new anonymous object with all data you need
+                                Exercise = g.Key,
+                                InputCount = loginsCount,
+                            };
+                var top5 = query.Take(5);
+                List<ChartDataViewModel> topExercises = new List<ChartDataViewModel>();
+                foreach (var item in top5)
+                {
+                    
+                        ChartDataViewModel challengeListInfo = new ChartDataViewModel();
+                        
+                        var exerciseName = exercisecontext.EX_ExerciseTable.FirstOrDefault(u => u.ExerciseId == item.Exercise).ExerciseName;
+                        challengeListInfo.ExerciseName = exerciseName;
+                        challengeListInfo.ExerciseCount = item.InputCount;
+                        topExercises.Add(challengeListInfo);
+                   
+                }
+                    int totalKGLifted = 0;
+                    var cardioInputs = usercontext.EX_UserExercise.Where(u => u.UserId == userId && u.ExerciseId == 6 || u.ExerciseId == 7 || u.ExerciseId == 8 || u.ExerciseId == 9 || u.ExerciseId == 10).Count();
+                    var strengthInputs = usercontext.EX_UserExercise.Where(u => u.UserId == userId && u.ExerciseId == 1 || u.ExerciseId == 2 || u.ExerciseId == 3 || u.ExerciseId == 4 || u.ExerciseId == 5).Count();
+                    var totalKGLiftedquery = usercontext.EX_UserExercise.Where(u => u.UserId == userId && u.ExerciseId == 1 || u.ExerciseId == 2 || u.ExerciseId == 3 || u.ExerciseId == 4 || u.ExerciseId == 5);
+                    var totalDistancequery = usercontext.EX_UserExercise.Where(u => u.UserId == userId && u.ExerciseId == 1 || u.ExerciseId == 7 || u.ExerciseId == 8 || u.ExerciseId == 9 || u.ExerciseId == 10);
+                    List<ChartDataViewModel> exerciseInputList = new List<ChartDataViewModel>();
+                    foreach (var item in totalKGLiftedquery)
+                    {
+                        ChartDataViewModel totalInputs = new ChartDataViewModel();
+                        totalInputs.strengthInput = item.ExerciseValue;
+                        exerciseInputList.Add(totalInputs);
+                    }
+                var result = new { TopExercises = topExercises, TotalKg = exerciseInputList, CardioInputs = cardioInputs, StrengthInputs = strengthInputs };
+                return Json(result, JsonRequestBehavior.AllowGet);
                 }
             }
         }

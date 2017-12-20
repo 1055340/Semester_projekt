@@ -5,38 +5,46 @@
 }
 
 <div class="row">
-    <h3>Running challenges</h3>
-
-    @foreach (var item in Model)
-    {
-        <div style="border:1px solid #e9e9e9; padding: 15px;" class="challenger col-xs-12" data-id="@Html.DisplayFor(Modelitem => item.ChallengeId)" data-accept="@Html.DisplayFor(Modelitem => item.Areyouchallenged)" data-won="@Html.DisplayFor(Modelitem => item.ThisUserWon)">
-            <div class="col-xs-8" >
-                <span style="font-weight:bold;">@Html.DisplayFor(Modelitem => item.ChallengeTitle)</span>
-                <span>(@Html.DisplayFor(Modelitem => item.exerciseName))</span>
-                <p>@Html.DisplayFor(Modelitem => item.ChallengerName)</p>
-                
-            </div>
-            <div class="acc-btn col-xs-4">
-                <a style="float:right;" class="btn btn-success" data-toggle="modal" data-target="#challengeModal">View</a>
-            </div>
-        </div>
-    }
-    <div id="challengeModal" class="modal fade" role="dialog">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal">&times;</button>
-                    <h4 class="modal-title"></h4>
+    
+    <div class="col-xs-12 challenge-container">
+        <h3>Current Challenges</h3>
+        <a href="/manage/ChallengeFriendList" class="challenge-add" style="">+</a>
+        <hr class="chalLine">
+        @foreach (var item in Model)
+        {
+            <div data-toggle="modal" data-target="#challengeModal" class="challenger col-xs-12" data-id="@Html.DisplayFor(Modelitem => item.ChallengeId)" data-accept="@Html.DisplayFor(Modelitem => item.Areyouchallenged)" data-won="@Html.DisplayFor(Modelitem => item.ThisUserWon)">
+                <div class="col-xs-8">
+                    <span style="font-weight:bold; font-size:1.2em;">@Html.DisplayFor(Modelitem => item.ChallengeTitle)</span>
+                    <p>@Html.DisplayFor(Modelitem => item.exerciseName)</p>
+                    <p>dig vs @Html.DisplayFor(Modelitem => item.ChallengerName)</p> 
                 </div>
-                <div class="modal-body">
-                    <img class="loader center-block animated rubberBand infinite" src="~/images/logo.png" />
+                <div class="acc-btn col-xs-4">
+                    <a style="float:right;" class="btn" >></a>
+                </div>
+            </div>
+        }
+        <div id="challengeModal" class="modal" role="dialog">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                        <h4 class="modal-title"></h4>
+                    </div>
+                    <div class="modal-body">
+                        <img class="loader center-block animated swing infinite" src="~/images/logo.png" />
+                        <p style="text-align: center;">Loading...</p>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
 </div>
-<div class="won-challenges row">
-    <h3>Won challenges</h3>
+<div class="row">
+    <div class="won-challenges col-xs-12">
+        <h3>Won challenges</h3>
+        <hr class="chalLine">
+    </div>
 </div>
+
 <script src="~/Scripts/challengelist.js"></script>
 <script src="~/Scripts/jquery.countdown.min.js"></script>

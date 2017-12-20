@@ -1,12 +1,13 @@
 ﻿$(document).ready(function () {
+    console.log("wew");
+    
 $.ajax({
     url: '/Manage/UserAchievementsUpdated',
     type: 'Post',
     datatype: 'json',
     data: { order: 'Client_Call' },
     success: function (data) {
-        console.log("wew");
-        $('.loader').remove();
+        $('.loader-div').fadeOut(500, function () { $(this).remove(); });
         var JsonArray = JSON.parse(data);
         for (var i = 0; i < JsonArray.length; i++) {
             var obj = JsonArray[i];

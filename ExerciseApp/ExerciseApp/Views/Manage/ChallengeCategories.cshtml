@@ -6,15 +6,16 @@
 
 <h2>Vælg Kategori</h2>
 <div class="row">
-    <div class="col-xs-12">
+    <div class="col-xs-12 challenge-categories-container">
 
         @foreach (var item in Model)
         {
             <div class="col-xs-4">
                 <div class="categories col-xs-12" data-toggle="modal" data-target="#categoryModal" data-return="@item.ExerciseType" data-value="@item.ExerciseMultiplier" data-id="@item.ExerciseId">
                     <img style="filter: invert(100%); height: 50px; width: 50px;" class="category-images" src="~/images/cat-@(item.ExerciseId).png" />
-                    <p>@Html.DisplayFor(modelItem => item.ExerciseName)</p>
+                    
                 </div>
+                <span>@Html.DisplayFor(modelItem => item.ExerciseName)</span>
             </div>
 
         }

@@ -2,14 +2,14 @@
 @model LoginViewModel
 @{
 }
-<div class="row">
-    <div style="text-align: center" class="col-md-12">
-        <section id="socialLoginForm">
-            @Html.Partial("_ExternalLoginsListPartial", new ExternalLoginListViewModel { ReturnUrl = ViewBag.ReturnUrl })
-        </section>
-    </div>
+<div class="row signInTop">
+    <section class="col-sm-12" style="text-align:center;">
+        <img id="logo" src="~/images/logo.png" />
+    </section>
+    <h2 class="titleSize">Log in</h2>
+    @Html.Partial("_ExternalLoginsListPartial", new ExternalLoginListViewModel { ReturnUrl = ViewBag.ReturnUrl })
+    <hr id="hrFrontPage" />
 </div>
-
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")
 }
