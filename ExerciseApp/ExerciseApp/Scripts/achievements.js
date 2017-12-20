@@ -1,5 +1,4 @@
 ﻿$(document).ready(function () {
-    console.log("wew");
     
 $.ajax({
     url: '/Manage/UserAchievementsUpdated',

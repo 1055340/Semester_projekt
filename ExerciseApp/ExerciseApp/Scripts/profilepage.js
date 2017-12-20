@@ -177,11 +177,13 @@
                                             datatype: 'json',
                                             data: { order: 'Client_Call' },
                                             success: function (data) {
+                                                
                                                 if (data.length === 2) {
                                                     setTimeout(function () {
                                                         $('.xp-popup').removeClass('popup-fadein');
                                                     }, 4000);
                                                 } else {
+                                                    
                                                     var JsonArray = JSON.parse(data);
                                                     var i = 0, l = JsonArray.length;
 
@@ -224,14 +226,13 @@
     });
 
 
-
+    
     var currentxp = $('.progress-bar').data('currentxp');
     var nextxp = $('.progress-bar').data('nextlevel');
     var xpProgress = (currentxp / nextxp) * 100;
     $('.progress-bar').animate({
         width: (xpProgress + '%')
     }, 200);
-
+    $('.loader-div').fadeOut(500, function () { $(this).remove(); });
 
 });
-

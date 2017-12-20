@@ -155,7 +155,7 @@ hr {
 
 .profilpic img {
     border-radius: 50%;
-    width: 122px;
+    width: 100px;
     float: right;
 }
 
@@ -346,16 +346,15 @@ hr {
     background-color: #f4f6f657;
     margin-top: -14%;
     padding-top: 14%;
-    padding-bottom:14%;
 }
 
 .Achievements, .TotalKg, .TotalKm {
     font-size: 15px;
 }
 
-.TotalKm {
+/*.TotalKm {
     padding-bottom: 7%;
-}
+}*/
 
 
 #profilImag {
@@ -724,10 +723,13 @@ hr {
 .xp-popup > div > .popup-img {
     text-align: center;
 }
-.xp-popup > div > .level-container {
-    border: none;
-    margin: 15px;
-}
+    .xp-popup > div > .level-container {
+        border: none;
+        margin: 0 15px;
+    }
+    .xp-popup > .row {
+        margin-top: -15px;
+    }
 .xp-reward {
     font-size: 1.5em;
 }

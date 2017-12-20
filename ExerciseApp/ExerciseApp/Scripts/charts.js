@@ -32,8 +32,8 @@
                 console.log(increasingTotal);
                 ExerciseInputs[i] = increasingTotal;
             }
-            var strengthInputs = data.CardioInputs;
-            var cardioInputs = data.StrengthInputs;
+            var strengthInputs = data.StrengthInputs;
+            var cardioInputs = data.CardioInputs;
 
         
 //global fontcolor = white

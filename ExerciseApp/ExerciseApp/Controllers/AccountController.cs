@@ -342,7 +342,6 @@ namespace ExerciseApp.Controllers
             }
             // Sign in the user with this external login provider if the user already has a login
             var result = await SignInManager.ExternalSignInAsync(loginInfo, isPersistent: false);
-            //var user = await UserManager.FindByEmailAsync(loginInfo.Email);
             switch (result)
             {
                 case SignInStatus.Success:
@@ -402,10 +401,11 @@ namespace ExerciseApp.Controllers
                     // If the user does not have an account, then prompt the user to create an account
                     ViewBag.ReturnUrl = returnUrl;
                     ViewBag.LoginProvider = loginInfo.Login.LoginProvider;
-                    
-                    
+                    string test = User.Identity.GetUserId();
 
-                    return View("ExternalLoginConfirmation", new ExternalLoginConfirmationViewModel {Email = loginInfo.Email});
+
+                    return View("ExternalLoginConfirmation", new ExternalLoginConfirmationViewModel { Email = loginInfo.Email });
+
             }
         }
 
